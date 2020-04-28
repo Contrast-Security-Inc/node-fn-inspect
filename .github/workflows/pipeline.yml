@@ -1,0 +1,123 @@
+name: Unit Tests and Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build-and-test:
+    strategy:
+      matrix:
+        node: [ 12, 10 ]
+        platform: [ macos-latest, windows-latest ]
+    runs-on: ${{ matrix.platform }}
+    name: ${{ matrix.platform }} Node ${{ matrix.node }} build/test
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install
+      - run: npm test
+      - uses: actions/upload-artifact@v1
+        with:
+          name: ${{ matrix.platform }}-${{ matrix.node }}
+          path: build/Release/funcinfo.node
+        if: github.ref == 'refs/heads/master'
+
+  build-and-test-linux:
+    strategy:
+      matrix:
+        node: [ 12, 10 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/centos7-test
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: linux-${{ matrix.node }}
+          path: build/Release/funcinfo.node
+        if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-16.04
+
+  artifact:
+    if: github.ref == 'refs/heads/master'
+    needs: [ build-and-test, build-and-test-linux ]
+    runs-on: ubuntu-latest
+    name: Building artifact
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      # download all of the built artifacts.
+      - run: mkdir artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: linux-12
+          path: artifact/linux-12
+      - uses: actions/download-artifact@v1
+        with:
+          name: linux-10
+          path: artifact/linux-10
+      - uses: actions/download-artifact@v1
+        with:
+          name: macos-latest-12
+          path: artifact/darwin-12
+      - uses: actions/download-artifact@v1
+        with:
+          name: macos-latest-10
+          path: artifact/darwin-10
+      - uses: actions/download-artifact@v1
+        with:
+          name: windows-latest-12
+          path: artifact/win32-12
+      - uses: actions/download-artifact@v1
+        with:
+          name: windows-latest-10
+          path: artifact/win32-10
+      - name: pack artifact
+        run: |
+          echo "artifacts" && ls artifact
+          mv index.js package.json artifact/
+          cd artifact && npm pack | xargs -I '{}' mv {} ./funcinfo.tgz
+      - uses: actions/upload-artifact@v1
+        with:
+          name: funcinfo.tgz
+          path: artifact/funcinfo.tgz
+        # upload the un-tar'd version
+      - uses: actions/upload-artifact@v1
+        with:
+          name: funcinfo
+          path: artifact
+
+  artifact-test:
+    if: github.ref == 'refs/heads/master'
+    needs: [ artifact ]
+    env:
+      USE_ARTIFACT: 1
+    strategy:
+      matrix:
+        platform: [ ubuntu-16.04, macos-latest, windows-latest ]
+        node: [ 10, 12 ]
+    name: ${{ matrix.platform }} Unit tests with artifact
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: https://registry.npmjs.org/
+      - run: npm install
+      - uses: actions/download-artifact@v1
+        with:
+          name: funcinfo
+          path: prebuilt
+      - run: npm test

@@ -1,0 +1,13 @@
+# action.yml
+name: 'Centos7 tests'
+description: 'Run tests on centos7'
+inputs:
+  node-version:
+    description: 'Version of node'
+    required: true
+    default: '10'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.node-version }}

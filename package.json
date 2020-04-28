@@ -1,0 +1,49 @@
+{
+  "name": "@contrast/fn-inspect",
+  "version": "1.0.1",
+  "description": "Retrieve function name and line number from a function reference",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Contrast-Security-Inc/node-fn-inspect.git"
+  },
+  "keywords": [
+    "instrumentation"
+  ],
+  "author": "Contrast Security",
+  "license": "MIT",
+  "gypfile": true,
+  "bugs": {
+    "url": "https://github.com/Contrast-Security-Inc/node-fn-inspect/issues"
+  },
+  "homepage": "https://github.com/Contrast-Security-Inc/node-fn-inspect#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@contrast/eslint-config": "^2.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-mocha": "^6.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.1",
+    "mocha": "^7.1.2",
+    "node-gyp": "^6.1.0",
+    "prettier": "^1.19.1"
+  },
+  "dependencies": {}
+}
