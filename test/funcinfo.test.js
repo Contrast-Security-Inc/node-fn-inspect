@@ -5,13 +5,13 @@ const { expect } = require('chai');
 let funcinfo;
 if (process.env.USE_ARTIFACT) {
   // eslint-disable-next-line node/no-missing-require
-  funcinfo = require('../prebuilt/index');
+  ({ funcinfo } = require('../prebuilt/index'));
   console.log(
     `Running tests with prebuilt for ${process.platform} ${process.version}`
   );
 } else {
-  funcinfo = require('..');
-  console.log('Running with locall built module');
+  ({ funcinfo } = require('..'));
+  console.log('Running with locally built module');
 }
 
 describe('funcinfo tests', function() {
