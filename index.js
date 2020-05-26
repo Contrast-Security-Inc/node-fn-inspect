@@ -57,7 +57,7 @@ module.exports = {
             l(codeEvent);
           });
         }
-      }, 1); // TODO configurable frequency?
+      }, 1).unref(); // TODO configurable frequency?
     } else {
       codeEventListeners.push(cb);
     }
