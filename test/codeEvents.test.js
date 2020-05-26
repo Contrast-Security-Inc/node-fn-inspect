@@ -34,6 +34,9 @@ function waitForLazyCompile({ name }) {
 describe('addCodeEventListener tests', function() {
   before(function() {
     addCodeEventListener(function(event) {
+      if (event.script.indexOf('codeEvents.test.js') != -1) {
+        console.log(event);
+      }
       events.push(event);
     });
   });
