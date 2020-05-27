@@ -19,6 +19,7 @@ function modLoad(name) {
       // eslint-disable-next-line no-empty
     } catch (e) {}
   }
+  throw new Error(`failed to load ${name}`);
 }
 
 const { funcinfo } = modLoad('funcinfo.node');
@@ -42,6 +43,13 @@ module.exports = {
     }
   },
 
+  /**
+   * Sets the function for processing v8 code events.
+   * Will start listening for code events if not already listening.
+   * starts a timer which polls for an available code event once every 1 ms.
+   *
+   * @param {function} cb callback function to call
+   */
   setCodeEventListener: (cb) => {
     if (!codeEventsInited) {
       codeEvents.init();
@@ -60,6 +68,9 @@ module.exports = {
     }
   },
 
+  /**
+   * Stop listening for v8 code events
+   */
   stopListening: () => {
     if (!codeEventsInited) {
       return;

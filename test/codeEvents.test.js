@@ -34,6 +34,10 @@ function waitForLazyCompile({ name }) {
 describe('addCodeEventListener tests', function() {
   beforeEach(function() {
     setCodeEventListener(function(event) {
+      // this is technically a memory leak as we're just always
+      // appending to the array of events and never releasing them
+      // to be GC'ed.  Not a good idea in practice, but fine for
+      // these unit tests
       events.push(event);
     });
   });
