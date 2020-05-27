@@ -28,6 +28,7 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
     FnInspectCodeEventHandler(Isolate *isolate) : CodeEventHandler(isolate) {
       this->isolate = isolate;
     }
+
     void Handle(CodeEvent *event) {
       v8::Locker locker(isolate);
       events.enqueue(event, isolate);
@@ -40,7 +41,6 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
     }
   private:
     Isolate *isolate;
-    Persistent<v8::String> hello;
     EventQueue events; 
 };
 
@@ -50,6 +50,11 @@ void Init(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
   handler = new FnInspectCodeEventHandler(isolate);
   handler->Enable();
+}
+
+void DeInit(const FunctionCallbackInfo<Value>& args) {
+  delete handler;
+  handler = NULL;
 }
 
 void GetNext(const FunctionCallbackInfo<Value>& args) {
@@ -105,6 +110,7 @@ void GetNext(const FunctionCallbackInfo<Value>& args) {
 
 void Initialize(Local<Object> exports) {
   NODE_SET_METHOD(exports, "init", Init);
+  NODE_SET_METHOD(exports, "deinit", DeInit);
   NODE_SET_METHOD(exports, "getNext", GetNext);
 }
 

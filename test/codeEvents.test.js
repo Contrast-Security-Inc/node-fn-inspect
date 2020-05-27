@@ -2,16 +2,16 @@
 // eslint-disable-next-line node/no-unpublished-require
 const { expect } = require('chai');
 
-let addCodeEventListener;
+let setCodeEventListener, stopListening;
 
 if (process.env.USE_ARTIFACT) {
   // eslint-disable-next-line node/no-missing-require
-  ({ addCodeEventListener } = require('../prebuilt/index'));
+  ({ setCodeEventListener, stopListening } = require('../prebuilt/index'));
   console.log(
     `Running tests with prebuilt for ${process.platform} ${process.version}`
   );
 } else {
-  ({ addCodeEventListener } = require('..'));
+  ({ setCodeEventListener, stopListening } = require('..'));
   console.log('Running with locally built module');
 }
 
@@ -33,12 +33,13 @@ function waitForLazyCompile({ name }) {
 
 describe('addCodeEventListener tests', function() {
   before(function() {
-    addCodeEventListener(function(event) {
-      if (event.script.indexOf('codeEvents.test.js') != -1) {
-        console.log(event);
-      }
+    setCodeEventListener(function(event) {
       events.push(event);
     });
+  });
+
+  after(function() {
+    stopListening();
   });
 
   it('should report simple lazy_compile events', function() {

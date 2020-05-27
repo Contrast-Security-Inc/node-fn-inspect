@@ -23,6 +23,7 @@ class EventNode {
 class EventQueue {
   public:
     EventQueue();
+    ~EventQueue();
     void enqueue(CodeEvent *event, Isolate *isolate);
     EventNode *dequeue();
     unsigned int length;

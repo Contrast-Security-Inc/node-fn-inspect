@@ -4,6 +4,7 @@
   "description": "Retrieve function name and line number from a function reference",
   "main": "index.js",
   "scripts": {
+    "valgrind-test": "valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all mocha --timeout 60000 test",
     "test": "mocha test"
   },
   "repository": {

@@ -14,6 +14,15 @@ EventQueue::EventQueue() {
   this->length = 0;
 }
 
+EventQueue::~EventQueue() {
+  EventNode *tmp;
+  while (this->head) {
+    tmp = this->head;;
+    this->head = this->head->next;
+    delete tmp;
+  }
+}
+
 void EventQueue::enqueue(CodeEvent *event, Isolate *isolate) {
   uv_timeval64_t tv;
   uv_gettimeofday(&tv);
