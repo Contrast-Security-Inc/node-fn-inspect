@@ -32,7 +32,7 @@ function waitForLazyCompile({ name }) {
 }
 
 describe('addCodeEventListener tests', function() {
-  before(function() {
+  beforeEach(function() {
     setCodeEventListener(function(event) {
       events.push(event);
     });
@@ -87,6 +87,21 @@ describe('addCodeEventListener tests', function() {
     setTimeout(testfunc3, 1000);
     return waitForLazyCompile({ name: 'testfunc3' }).then((event) => {
       expect(event.script).to.equal(__filename);
+    });
+  });
+
+  it('should be able to change the listener function', function() {
+    let newListenerCalled = false;
+    setCodeEventListener(function(event) {
+      events.push(event);
+      newListenerCalled = true;
+    });
+
+    const testfunc4 = () => 1 + 2;
+    testfunc4();
+    return waitForLazyCompile({ name: 'testfunc4' }).then((event) => {
+      expect(event.script).to.equal(__filename);
+      expect(newListenerCalled).to.be.true;
     });
   });
 });
