@@ -15,6 +15,7 @@ using v8::Context;
 using v8::Function;
 using v8::FunctionCallbackInfo;
 using v8::Integer;
+using v8::Number;
 using v8::Isolate;
 using v8::Local;
 using v8::NewStringType;
@@ -93,16 +94,10 @@ void GetNext(const FunctionCallbackInfo<Value>& args) {
            .FromJust();
     obj->Set(context,
            String::NewFromUtf8(isolate,
-                               "tv_sec",
-                               NewStringType::kNormal).ToLocalChecked(),
-           Integer::New(isolate, node->tv.tv_sec))
-           .FromJust();
-    obj->Set(context,
-           String::NewFromUtf8(isolate,
-                               "tv_usec",
-                               NewStringType::kNormal).ToLocalChecked(),
-           Integer::New(isolate, node->tv.tv_usec))
-           .FromJust();
+		               "ts",
+			       NewStringType::kNormal).ToLocalChecked(),
+	   Number::New(isolate, node->ts))
+	   .FromJust();
     args.GetReturnValue().Set(obj);
     delete node;
   }

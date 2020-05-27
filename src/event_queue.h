@@ -12,7 +12,7 @@ class EventNode {
     char *script;
     char *func;
     int lineNum;
-    uv_timeval64_t tv;
+    double ts;
     EventNode *next;
     ~EventNode() {
       free(this->script);

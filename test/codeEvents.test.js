@@ -83,10 +83,13 @@ describe('addCodeEventListener tests', function() {
   });
 
   it('should report delayed function', function() {
+    const declareTime = Date.now();
     const testfunc3 = () => 1 + 2;
     setTimeout(testfunc3, 1000);
     return waitForLazyCompile({ name: 'testfunc3' }).then((event) => {
       expect(event.script).to.equal(__filename);
+      // event should have occurred at least a second after it was declared
+      expect(event.ts.getTime() - declareTime).to.be.above(999);
     });
   });
 

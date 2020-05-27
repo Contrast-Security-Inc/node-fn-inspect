@@ -51,11 +51,7 @@ module.exports = {
         const codeEvent = codeEvents.getNext();
         if (codeEvent) {
           codeEvent.type = codeEventTypes[codeEvent.type];
-          codeEvent.ts = new Date(
-            codeEvent.tv_sec * 1000 + codeEvent.tv_usec / 1000
-          );
-          delete codeEvent.tv_usec;
-          delete codeEvent.tv_sec;
+          codeEvent.ts = new Date(codeEvent.ts);
           codeEventListener(codeEvent);
         }
       }, 1); // TODO configurable frequency?

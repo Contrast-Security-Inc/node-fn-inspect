@@ -35,7 +35,7 @@ void EventQueue::enqueue(CodeEvent *event, Isolate *isolate) {
   node->script = strdup(*v8::String::Utf8Value(isolate, event->GetScriptName()));
   node->func = strdup(*v8::String::Utf8Value(isolate, event->GetFunctionName()));
   node->lineNum = event->GetScriptLine();
-  node->tv = tv;
+  node->ts = tv.tv_sec * 1000 + (tv.tv_usec / 1000);
   if (this->tail) {
     this->tail->next = node;
     this->tail = node;
