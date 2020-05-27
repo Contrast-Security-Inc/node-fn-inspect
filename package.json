@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "valgrind-test": "valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all mocha --timeout 60000 test",
-    "test": "mocha test"
+    "test": "nyc --reporter=text-summary --reporter=html --report-dir=./coverage mocha test"
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "lint-staged": "^10.2.1",
     "mocha": "^7.1.2",
     "node-gyp": "^6.1.0",
+    "nyc": "^15.0.1",
     "prettier": "^1.19.1"
   },
   "dependencies": {}

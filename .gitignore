@@ -4,3 +4,5 @@ build
 *.swo
 *.swn
 artifact
+.nyc_output
+coverage
