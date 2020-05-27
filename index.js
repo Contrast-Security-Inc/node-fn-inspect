@@ -1,7 +1,7 @@
 'use strict';
 let codeEventsInited, codeEventListener, _interval;
 const version = process.version.split('.')[0].substring(1);
-const codeEventTypes = require('./codeEventTypes');
+const codeEventTypes = require('./code-event-types');
 
 codeEventsInited = false;
 

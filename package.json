@@ -23,7 +23,7 @@
   "homepage": "https://github.com/Contrast-Security-Inc/node-fn-inspect#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npx ls-lint"
     }
   },
   "lint-staged": {
@@ -47,5 +47,7 @@
     "nyc": "^15.0.1",
     "prettier": "^1.19.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@ls-lint/ls-lint": "^1.8.1"
+  }
 }
