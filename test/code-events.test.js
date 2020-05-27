@@ -31,15 +31,25 @@ function waitForLazyCompile({ name }) {
   });
 }
 
+function handler(event) {
+  // this is technically a memory leak as we're just always
+  // appending to the array of events and never releasing them
+  // to be GC'ed.  Not a good idea in practice, but fine for
+  // these unit tests
+  events.push(event);
+}
+
 describe('addCodeEventListener tests', function() {
+  before(function(done) {
+    // in CI it takes a long time for windows to
+    // get through the initial burst of available code events
+    this.timeout(61000);
+    setTimeout(done, 60000);
+    setCodeEventListener(handler);
+  });
+
   beforeEach(function() {
-    setCodeEventListener(function(event) {
-      // this is technically a memory leak as we're just always
-      // appending to the array of events and never releasing them
-      // to be GC'ed.  Not a good idea in practice, but fine for
-      // these unit tests
-      events.push(event);
-    });
+    setCodeEventListener(handler);
   });
 
   after(function() {
