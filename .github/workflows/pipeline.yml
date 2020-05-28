@@ -86,7 +86,7 @@ jobs:
       - name: pack artifact
         run: |
           echo "artifacts" && ls artifact
-          mv index.js package.json artifact/
+          mv *.js package.json artifact/
           cd artifact && npm pack | xargs -I '{}' mv {} ./funcinfo.tgz
       - uses: actions/upload-artifact@v1
         with:
