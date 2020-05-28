@@ -1,14 +1,19 @@
 # @contrast/fn-inspect
 
-This module uses some v8 function APIs to obtain the file and line number of a function reference.  It will also return the constructor's name and function name.
+This module exposes some useful information from the underlying v8 engine.  Including:
+
+* file and line number given a function reference
+* code events (i.e. LAZY_COMPILE)
 
 ## Installation
 `npm install @contrast/fn-inspect`
 
 ## Usage
 
+Getting details about a function:
+
 ```javascript
-  const funcInfo = require('@contrast/fn-inspect');
+  const { funcInfo } = require('@contrast/fn-inspect');
 
   function testFunction() {}
 
@@ -16,6 +21,16 @@ This module uses some v8 function APIs to obtain the file and line number of a f
 
   // Returns an object with the following data
   // { lineNumber: 2, file: 'example.js', method: 'testFunction', type: 'Function' }
+```
+
+Registering a listener for code events:
+
+```javascript
+  const { setCodeEventListener } = require('@contrast/fn-inspect');
+
+  setCodeEventListener(function(event) {
+    console.log(event);
+  });
 ```
 
 ## Build locally
