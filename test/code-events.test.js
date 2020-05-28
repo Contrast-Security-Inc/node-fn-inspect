@@ -41,11 +41,15 @@ function handler(event) {
 
 describe('addCodeEventListener tests', function() {
   before(function(done) {
+    setCodeEventListener(handler);
     // in CI it takes a long time for windows to
     // get through the initial burst of available code events
-    this.timeout(61000);
-    setTimeout(done, 60000);
-    setCodeEventListener(handler);
+    if (process.platform === 'win32') {
+      this.timeout(61000);
+      setTimeout(done, 60000);
+    } else {
+      done();
+    }
   });
 
   beforeEach(function() {
@@ -99,11 +103,11 @@ describe('addCodeEventListener tests', function() {
   it('should report delayed function', function() {
     const declareTime = Date.now();
     const testfunc3 = () => 1 + 2;
-    setTimeout(testfunc3, 1000);
+    setTimeout(testfunc3, 1500);
     return waitForLazyCompile({ name: 'testfunc3' }).then((event) => {
       expect(event.script).to.equal(__filename);
-      // event should have occurred at least a second after it was declared
-      expect(event.ts.getTime() - declareTime).to.be.above(999);
+      // settimeout isn't exact but it should be a close to 1.5 seconds after declaration
+      expect(event.ts.getTime() - declareTime).to.be.above(1250);
     });
   });
 
