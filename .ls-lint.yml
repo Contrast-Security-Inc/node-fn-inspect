@@ -1,0 +1,19 @@
+ls:
+  .js: kebab-case
+  .test.js: kebab-case
+  .mock.js: kebab-case
+  .integration.test.js: kebab-case
+  .cc: kebab-case
+  .h: kebab-case  
+
+ignore:
+  - node_modules
+  - .git
+  - .circleci
+  - .github
+  - .vscode
+  - test/resources
+  - labs
+  - test/benchmark
+  - target
+  - test/mock
