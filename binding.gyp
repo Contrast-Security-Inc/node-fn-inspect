@@ -9,8 +9,8 @@
     {
       "target_name": "code_events",
       "sources": [
-        "src/code_events.cc",
-        "src/event_queue.cc"
+        "src/code-events.cc",
+        "src/event-queue.cc"
       ]
     }
   ]

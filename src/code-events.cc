@@ -5,7 +5,7 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include "event_queue.h"
+#include "event-queue.h"
 
 namespace codeevents {
 
