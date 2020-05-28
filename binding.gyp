@@ -7,7 +7,7 @@
       ]
     },
     {
-      "target_name": "code_events",
+      "target_name": "codeevents",
       "sources": [
         "src/code-events.cc",
         "src/event-queue.cc"

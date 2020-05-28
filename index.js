@@ -23,7 +23,7 @@ function modLoad(name) {
 }
 
 const { funcinfo } = modLoad('funcinfo.node');
-const codeEvents = modLoad('code_events.node');
+const codeEvents = modLoad('codeevents.node');
 
 module.exports = {
   /**
