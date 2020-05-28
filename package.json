@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@contrast/eslint-config": "^2.0.0",
+    "@ls-lint/ls-lint": "^1.8.1",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
@@ -47,7 +48,5 @@
     "nyc": "^15.0.1",
     "prettier": "^1.19.1"
   },
-  "dependencies": {
-    "@ls-lint/ls-lint": "^1.8.1"
-  }
+  "dependencies": {}
 }
