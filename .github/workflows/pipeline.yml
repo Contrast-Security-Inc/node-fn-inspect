@@ -27,7 +27,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.platform }}-${{ matrix.node }}
-          path: build/Release/funcinfo.node
+          path: build/Release/*.node
         if: github.ref == 'refs/heads/master'
 
   build-and-test-linux:
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: linux-${{ matrix.node }}
-          path: build/Release/funcinfo.node
+          path: build/Release/*.node
         if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-16.04
 
