@@ -13,6 +13,8 @@ class EventNode {
     char *func;
     int lineNum;
     double ts;
+    size_t codeSize;
+    uintptr_t addr;
     EventNode *next;
     ~EventNode() {
       free(this->script);

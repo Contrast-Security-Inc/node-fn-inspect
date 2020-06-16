@@ -79,5 +79,10 @@ module.exports = {
     codeEvents.deinit();
     codeEventListener = null;
     codeEventsInited = false;
+  },
+
+  override: (...args) => {
+    console.log(args);
+    codeEvents.override(...args);
   }
 };

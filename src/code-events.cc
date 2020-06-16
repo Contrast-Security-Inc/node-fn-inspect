@@ -32,6 +32,10 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
 
     void Handle(CodeEvent *event) {
       v8::Locker locker(isolate);
+      if (event->GetCodeType() == 8) {
+        //std::cout << "addr: " << event->GetCodeStartAddress() << std::endl;
+	//std::cout << "size: " << event->GetCodeSize() << std::endl;
+      }
       events.enqueue(event, isolate);
     }
     EventNode *dequeue() {
@@ -98,15 +102,38 @@ void GetNext(const FunctionCallbackInfo<Value>& args) {
 			       NewStringType::kNormal).ToLocalChecked(),
 	   Number::New(isolate, node->ts))
 	   .FromJust();
+    obj->Set(context,
+           String::NewFromUtf8(isolate, "addr", NewStringType::kNormal).ToLocalChecked(),
+	   Number::New(isolate, node->addr))
+	   .FromJust();
+    obj->Set(context,
+           String::NewFromUtf8(isolate, "codeSize", NewStringType::kNormal).ToLocalChecked(),
+	   Number::New(isolate, node->codeSize))
+	   .FromJust();
+
     args.GetReturnValue().Set(obj);
     delete node;
   }
+}
+
+void Override(const FunctionCallbackInfo<Value>& args) {
+  Local<v8::Number> targetAddr = Local<v8::Number>::Cast(args[0]);
+  Local<v8::Number> sourceAddr = Local<v8::Number>::Cast(args[1]);
+  Local<v8::Number> codeSize = Local<v8::Number>::Cast(args[2]);
+  uintptr_t targetPtr = (uintptr_t) targetAddr->Value();
+  uintptr_t sourcePtr = (uintptr_t) sourceAddr->Value();
+  size_t size = (size_t) codeSize->Value();
+  std::cout << "start memcpy??" << std::endl;
+  std::cout << "targetAddr: " << std::hex << targetPtr << std::endl;
+  memcpy((void *)targetPtr, (void *)sourcePtr, size);
+  std::cout << "done memcpy??" << std::endl;
 }
 
 void Initialize(Local<Object> exports) {
   NODE_SET_METHOD(exports, "init", Init);
   NODE_SET_METHOD(exports, "deinit", DeInit);
   NODE_SET_METHOD(exports, "getNext", GetNext);
+  NODE_SET_METHOD(exports, "override", Override);
 }
 
 NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
