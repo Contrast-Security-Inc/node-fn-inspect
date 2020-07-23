@@ -56,8 +56,8 @@ module.exports = {
       codeEventsInited = true;
       codeEventListener = cb;
       _interval = setInterval(() => {
-        const codeEvent = codeEvents.getNext();
-        if (codeEvent) {
+        let codeEvent;
+        while (codeEvent = codeEvents.getNext()) {
           codeEvent.type = codeEventTypes[codeEvent.type];
           codeEvent.ts = new Date(codeEvent.ts);
           codeEventListener(codeEvent);
