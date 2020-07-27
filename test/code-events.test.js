@@ -27,7 +27,7 @@ function waitForLazyCompile({ name }) {
           return;
         }
       }
-    }, 1);
+    }, 10);
   });
 }
 
