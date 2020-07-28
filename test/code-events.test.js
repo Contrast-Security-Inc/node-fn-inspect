@@ -15,7 +15,7 @@ if (process.env.USE_ARTIFACT) {
   console.log('Running with locally built module');
 }
 
-const events = [];
+let events = [];
 let eventIndex = 0;
 function waitForLazyCompile({ name }) {
   return new Promise((resolve) => {
@@ -52,12 +52,9 @@ describe('addCodeEventListener tests', function() {
     }
   });
 
-  beforeEach(function() {
-    setCodeEventListener(handler);
-  });
-
   after(function() {
     stopListening();
+    events = [];
   });
 
   it('should report simple lazy_compile events', function() {

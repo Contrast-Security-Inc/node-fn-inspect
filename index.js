@@ -46,11 +46,12 @@ module.exports = {
   /**
    * Sets the function for processing v8 code events.
    * Will start listening for code events if not already listening.
-   * starts a timer which polls for an available code event once every 1 ms.
+   * starts a timer which polls for an available code event once every `interval` value.
    *
    * @param {function} cb callback function to call
+   * @param {Number} [interval=1] how often to get code events in ms
    */
-  setCodeEventListener: (cb) => {
+  setCodeEventListener: (cb, interval = 1) => {
     if (!codeEventsInited) {
       codeEvents.init();
       codeEventsInited = true;
@@ -62,7 +63,7 @@ module.exports = {
           codeEvent.ts = new Date(codeEvent.ts);
           codeEventListener(codeEvent);
         }
-      }, 1); // TODO configurable frequency?
+      }, interval);
     } else {
       codeEventListener = cb;
     }
