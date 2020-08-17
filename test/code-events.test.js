@@ -104,7 +104,7 @@ describe('addCodeEventListener tests', function() {
     return waitForLazyCompile({ name: 'testfunc3' }).then((event) => {
       expect(event.script).to.equal(__filename);
       // settimeout isn't exact but it should be a close to 1.5 seconds after declaration
-      expect(event.ts.getTime() - declareTime).to.be.above(1250);
+      expect(Date.now() - declareTime).to.be.above(1250);
     });
   });
 
