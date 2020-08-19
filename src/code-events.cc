@@ -92,12 +92,6 @@ void GetNext(const FunctionCallbackInfo<Value>& args) {
                                NewStringType::kNormal).ToLocalChecked(),
            Integer::New(isolate, node->lineNum))
            .FromJust();
-    obj->Set(context,
-           String::NewFromUtf8(isolate,
-		               "ts",
-			       NewStringType::kNormal).ToLocalChecked(),
-	   Number::New(isolate, node->ts))
-	   .FromJust();
     args.GetReturnValue().Set(obj);
     delete node;
   }

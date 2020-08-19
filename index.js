@@ -60,7 +60,6 @@ module.exports = {
         const codeEvent = codeEvents.getNext();
         if (codeEvent) {
           codeEvent.type = codeEventTypes[codeEvent.type];
-          codeEvent.ts = new Date(codeEvent.ts);
           codeEventListener(codeEvent);
         }
       }, interval);

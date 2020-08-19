@@ -12,7 +12,6 @@ class EventNode {
     char *script;
     char *func;
     int lineNum;
-    double ts;
     EventNode *next;
     ~EventNode() {
       free(this->script);
