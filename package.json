@@ -4,6 +4,8 @@
   "description": "Retrieve function name and line number from a function reference",
   "main": "index.js",
   "scripts": {
+    "tag": "scripts/make-release.js",
+    "build": "asar p src/ src.asar",
     "valgrind-test": "valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all mocha --timeout 60000 test",
     "test": "nyc --reporter=text-summary --reporter=html --report-dir=./coverage mocha test"
   },
@@ -32,6 +34,19 @@
       "git add"
     ]
   },
+  "files": [
+    "code-avent-types.js",
+    "index.js",
+    "win32-10/**",
+    "win32-12/**",
+    "win32-14/**",
+    "linux-10/**",
+    "linux-12/**",
+    "linux-14/**",
+    "darwin-10/**",
+    "darwin-12/**",
+    "darwin-14/**"
+  ],
   "devDependencies": {
     "@contrast/eslint-config": "^2.0.0",
     "@ls-lint/ls-lint": "^1.8.1",
@@ -46,7 +61,8 @@
     "mocha": "^7.1.2",
     "node-gyp": "^6.1.0",
     "nyc": "^15.0.1",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "yargs-interactive": "^3.0.0"
   },
   "dependencies": {}
 }
