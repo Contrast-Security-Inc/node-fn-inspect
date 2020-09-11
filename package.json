@@ -34,7 +34,7 @@
     ]
   },
   "files": [
-    "code-avent-types.js",
+    "code-event-types.js",
     "index.js",
     "win32-10/**",
     "win32-12/**",
