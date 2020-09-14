@@ -43,7 +43,7 @@ Registering a listener for code events:
 1. Trigger a Build Artifact workflow by merging or pushing to develop.
 2. Download the funcinfo.tgz.zip artifact produced during the run
 3. Open directory containing funcinfo.tgz.zip
-4. Run scripts/npm-publish.sh
+4. Run `npm run release`
 
 ## License
 Copyright 2020-present OpenJS Foundation and contributors. Licensed [MIT](https://github.com/Contrast-Security-Inc/node-fn-inspect/blob/master/LICENSE).
