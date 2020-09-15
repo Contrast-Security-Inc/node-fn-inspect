@@ -28,7 +28,9 @@ yargsInteractive()
     const path = pa.resolve(os.homedir(), funcinfoPath);
 
     if (fs.existsSync(`${path}/funcinfo.tgz.zip`)) {
-      cp.execSync(`${__dirname}/npm-publish.sh ${releaseType} ${path}`);
+      cp.execSync(`${__dirname}/npm-publish.sh ${releaseType} ${path}`, {
+        stdio: 'inherit'
+      });
     } else {
       console.log('funcinfo.tgz.zip not found');
     }
