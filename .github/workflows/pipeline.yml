@@ -12,7 +12,7 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        node: [ 12, 10 ]
+        node: [ 14, 12, 10 ]
         platform: [ macos-latest, windows-latest ]
     runs-on: ${{ matrix.platform }}
     name: ${{ matrix.platform }} Node ${{ matrix.node }} build/test
@@ -38,7 +38,7 @@ jobs:
   build-and-test-linux:
     strategy:
       matrix:
-        node: [ 12, 10 ]
+        node: [ 14, 12, 10 ]
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/centos7-test
@@ -65,10 +65,14 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
           registry-url: https://registry.npmjs.org/
       # download all of the built artifacts.
       - run: mkdir artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: linux-14
+          path: artifact/linux-14
       - uses: actions/download-artifact@v1
         with:
           name: linux-12
@@ -79,12 +83,20 @@ jobs:
           path: artifact/linux-10
       - uses: actions/download-artifact@v1
         with:
+          name: macos-latest-14
+          path: artifact/darwin-14
+      - uses: actions/download-artifact@v1
+        with:
           name: macos-latest-12
           path: artifact/darwin-12
       - uses: actions/download-artifact@v1
         with:
           name: macos-latest-10
           path: artifact/darwin-10
+      - uses: actions/download-artifact@v1
+        with:
+          name: windows-latest-14
+          path: artifact/win32-14
       - uses: actions/download-artifact@v1
         with:
           name: windows-latest-12
@@ -116,7 +128,7 @@ jobs:
     strategy:
       matrix:
         platform: [ ubuntu-16.04, macos-latest, windows-latest ]
-        node: [ 10, 12 ]
+        node: [ 10, 12, 14 ]
     name: ${{ matrix.platform }} Unit tests with artifact
     runs-on: ${{ matrix.platform }}
     steps:
