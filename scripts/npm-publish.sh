@@ -13,8 +13,9 @@ rm -rf $FUNCINFO_PATH/funcinfo
 rm -rf $FUNCINFO_PATH/funcinfo.tgz
 
 unzip $FUNCINFO_PATH/funcinfo.tgz.zip -d $FUNCINFO_PATH
-tar -xzvf $FUNCINFO_PATH/funcinfo.tgz -C $FUNCINFO_PATH
+mkdir $FUNCINFO_PATH/funcinfo
+tar -xzvf $FUNCINFO_PATH/funcinfo.tgz -C $FUNCINFO_PATH/funcinfo
 
 echo "Publishing module"
-npm version $SEMVER_TYPE --prefix $FUNCINFO_PATH/package
-npm publish $FUNCINFO_PATH/package
+npm version $SEMVER_TYPE --prefix $FUNCINFO_PATH/funcinfo/package
+npm publish $FUNCINFO_PATH/funcinfo/package --dry-run
