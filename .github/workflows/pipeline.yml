@@ -22,8 +22,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - run: npm install
-      - run: npm test
+      - name: Run tests
+        run: |
+          npm install
+          npm test
+      - name: Publish coverage
+        run: ./node_modules/.bin/codecov -F node${{matrix.node}} -f coverage/lcov.info
       - uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.platform }}-${{ matrix.node }}
