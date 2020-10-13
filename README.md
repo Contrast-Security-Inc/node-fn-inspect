@@ -1,4 +1,6 @@
 # @contrast/fn-inspect
+[![codecov](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect/branch/master/graph/badge.svg)](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect)
+![Pipeline Status](https://github.com/Contrast-Security-Inc/node-fn-inspect/workflows/Unit%20Tests%20and%20Build/badge.svg)
 
 This module exposes some useful information from the underlying v8 engine.  Including:
 
