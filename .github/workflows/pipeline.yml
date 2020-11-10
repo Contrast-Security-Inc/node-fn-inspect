@@ -3,7 +3,7 @@ name: Unit Tests and Build
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
       - '*'
@@ -34,12 +34,12 @@ jobs:
         with:
           name: ${{ matrix.platform }}-${{ matrix.node }}
           path: build/Release/funcinfo.node
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
       - uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.platform }}-${{ matrix.node }}
           path: build/Release/codeevents.node
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
 
   build-and-test-linux:
     strategy:
@@ -54,16 +54,16 @@ jobs:
         with:
           name: linux-${{ matrix.node }}
           path: build/Release/funcinfo.node
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
       - uses: actions/upload-artifact@v1
         with:
           name: linux-${{ matrix.node }}
           path: build/Release/codeevents.node
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-16.04
 
   artifact:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     needs: [ build-and-test, build-and-test-linux ]
     runs-on: ubuntu-latest
     name: Building artifact
@@ -127,7 +127,7 @@ jobs:
           path: artifact
 
   artifact-test:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     needs: [ artifact ]
     env:
       USE_ARTIFACT: 1

@@ -1,5 +1,5 @@
 # @contrast/fn-inspect
-[![codecov](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect/branch/master/graph/badge.svg)](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect)
+[![codecov](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect/branch/main/graph/badge.svg)](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect)
 ![Pipeline Status](https://github.com/Contrast-Security-Inc/node-fn-inspect/workflows/Unit%20Tests%20and%20Build/badge.svg)
 
 This module exposes some useful information from the underlying v8 engine.  Including:
@@ -47,4 +47,4 @@ Registering a listener for code events:
 3. Run `npm run release`
 
 ## License
-Copyright 2020-present OpenJS Foundation and contributors. Licensed [MIT](https://github.com/Contrast-Security-Inc/node-fn-inspect/blob/master/LICENSE).
+Copyright 2020-present OpenJS Foundation and contributors. Licensed [MIT](https://github.com/Contrast-Security-Inc/node-fn-inspect/blob/main/LICENSE).
