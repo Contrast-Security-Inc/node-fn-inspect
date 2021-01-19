@@ -93,7 +93,7 @@ void GetNext(const FunctionCallbackInfo<Value>& args) {
            Integer::New(isolate, node->lineNum))
            .FromJust();
     args.GetReturnValue().Set(obj);
-    delete node;
+    //delete node;
   }
 }
 
