@@ -18,7 +18,7 @@ EventQueue::~EventQueue() {
   while (this->head) {
     tmp = this->head;;
     this->head = this->head->next;
-    delete tmp;
+    //delete tmp;
   }
 }
 
