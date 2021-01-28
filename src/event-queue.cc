@@ -27,6 +27,10 @@ void EventQueue::enqueue(CodeEvent *event, Isolate *isolate) {
     return;
   }
   EventNode *node = new EventNode();
+  // read beyond alloc'ed buffer
+  void *b = node + sizeof(EventNode);
+  int x = *((int *) b);
+  std::cout << "x was " << x << std::endl;
   node->type = event->GetCodeType();
   node->script = strdup(*v8::String::Utf8Value(isolate, event->GetScriptName()));
   node->func = strdup(*v8::String::Utf8Value(isolate, event->GetFunctionName()));
