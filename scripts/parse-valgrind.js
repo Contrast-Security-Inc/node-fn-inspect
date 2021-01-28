@@ -11,13 +11,23 @@ JSON.parse(fs.readFileSync('./binding.gyp')).targets.forEach((target) => {
 const result = JSON.parse(convert.xml2json(xml, { compact: true }));
 const relatedErrors = result.valgrindoutput.error.filter((err) => {
   let match = false;
-  err.stack.frame.forEach((frame) => {
-    targetNames.forEach((targetName) => {
-      if (frame.obj && frame.obj._text.indexOf(`${targetName}.node`) !== -1) {
-        match = true;
-      }
+  if (Array.isArray(err.stack)) {
+    err.stack[0].frame.forEach((frame) => {
+      targetNames.forEach((targetName) => {
+        if (frame.obj && frame.obj._text.indexOf(`${targetName}.node`) !== -1) {
+          match = true;
+        }
+      });
     });
-  });
+  } else {
+    err.stack.frame.forEach((frame) => {
+      targetNames.forEach((targetName) => {
+        if (frame.obj && frame.obj._text.indexOf(`${targetName}.node`) !== -1) {
+          match = true;
+        }
+      });
+    });
+  }
   return match;
 });
 
