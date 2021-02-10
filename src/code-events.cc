@@ -7,6 +7,13 @@
 
 #include "event-queue.h"
 
+#ifdef __linux_build__
+#define _GNU_SOURCE
+#include <unistd.h>
+#elif __mac_build__
+#include <pthread.h>
+#endif
+
 namespace codeevents {
 
 using v8::CodeEvent;
@@ -31,7 +38,15 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
     }
 
     void Handle(CodeEvent *event) {
-      v8::Locker locker(isolate);
+      #ifdef __linux_build__
+        if (getpid() != gettid()) {
+      #elif __mac_build__
+        if (pthread_main_np() != 1) {
+      #else
+        // TODO fill in just break compilation for now
+      #endif
+          std::cerr << "code event on background thread - ignoring" << std::endl;
+	}
       events.enqueue(event, isolate);
     }
     EventNode *dequeue() {

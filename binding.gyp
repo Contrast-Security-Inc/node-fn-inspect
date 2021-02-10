@@ -11,7 +11,13 @@
       "sources": [
         "src/code-events.cc",
         "src/event-queue.cc"
-      ]
+      ],
+      "conditions": [
+        [ "OS==\"linux\"",
+          { "defines": ["__linux_build__"] } ],
+        [ "OS==\"mac\"",
+          { "defines": ["__mac_build__"] } ],
+      ],
     }
   ]
 }
