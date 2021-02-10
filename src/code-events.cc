@@ -8,8 +8,8 @@
 #include "event-queue.h"
 
 #ifdef __linux_build__
-#define _GNU_SOURCE
 #include <unistd.h>
+#include <sys/syscall.h>
 #elif __mac_build__
 #include <pthread.h>
 #endif
@@ -38,8 +38,11 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
     }
 
     void Handle(CodeEvent *event) {
+      if (event->GetCodeType() == v8::CodeEventType::kRelocationType) {
+        std::cerr << "got relocation" << std::endl;
+      }
       #ifdef __linux_build__
-        if (getpid() != gettid()) {
+        if (getpid() != syscall(SYS_gettid)) {
       #elif __mac_build__
         if (pthread_main_np() != 1) {
       #else
@@ -63,6 +66,7 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
 FnInspectCodeEventHandler *handler;
 
 void Init(const FunctionCallbackInfo<Value>& args) {
+  std::cerr << "PM in init" << std::endl;
   Isolate* isolate = args.GetIsolate();
   handler = new FnInspectCodeEventHandler(isolate);
   handler->Enable();
