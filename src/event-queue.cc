@@ -2,11 +2,22 @@
 #include <iostream>
 #include <string.h>
 
+/*
+ * Implements a simple queue of code events that can be
+ * consumed.
+ *
+ * Thread-Safety: There's no locking on these methods so
+ * they aren't thread safe.  However this should be OK
+ * as the expectation is these methods are only ever called
+ * from the main JS thread and they are blocking, there will
+ * only ever be a single thread calling it as a time.  We
+ * may want to revisit this if we ever want to support
+ * handling events from worker_threads.
+ */
 namespace codeevents {
 
 using v8::String;
 
-// TODO need to v8 locker these methods?
 EventQueue::EventQueue() {
   this->head = NULL;
   this->tail = NULL;

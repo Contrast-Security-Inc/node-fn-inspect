@@ -31,7 +31,14 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
     }
 
     void Handle(CodeEvent *event) {
-      v8::Locker locker(isolate);
+      /*
+       * If Handle() is invoked from a worker thread (i.e. during
+       * garbage collection) we don't have access to the isolate
+       * so just bail
+       */
+      if (v8::Isolate::GetCurrent() != isolate) {
+        return;
+      }
       events.enqueue(event, isolate);
     }
     EventNode *dequeue() {
