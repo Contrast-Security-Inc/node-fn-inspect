@@ -32,8 +32,13 @@ yargsInteractive()
         stdio: 'inherit'
       });
     } else {
-      console.log('funcinfo.tgz.zip not found');
+      throw new Error('funcinfo.tgz.zip not found');
     }
+    return releaseType;
+  })
+  .then((releaseType) => {
+    // Only bump version in local checkout if publishing artifact is successful
+    cp.exec(`npm version ${releaseType}`);
   })
   .catch((err) => {
     console.log('Publishing failed:');
