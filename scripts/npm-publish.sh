@@ -17,4 +17,4 @@ tar -xzvf funcinfo.tgz -C funcinfo
 
 echo "Publishing module"
 npm version $SEMVER_TYPE --prefix funcinfo/package
-npm publish funcinfo/package
+npm publish funcinfo/package --dry-run
