@@ -1,4 +1,5 @@
-#!/usr/bin/env -S bash -e
+#!/usr/bin/env bash
+set -e
 
 if [[ -z $1 ]]; then
   echo "Please specify semver type"
