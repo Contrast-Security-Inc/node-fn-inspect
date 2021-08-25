@@ -1,12 +1,12 @@
 {
   "name": "@contrast/fn-inspect",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Retrieve function name and line number from a function reference",
   "main": "index.js",
   "scripts": {
     "prerelease": "node scripts/download-artifact.js",
     "release": "node scripts/make-release.js",
-    "postrelease": "git push origin main",
+    "postrelease": "git push origin main && git push --tags",
     "test:valgrind": "valgrind --xml=yes --xml-file=./valgrind.xml --trace-children=yes --leak-check=full --show-leak-kinds=all mocha --timeout 60000 test && node scripts/parse-valgrind.js",
     "test": "nyc --reporter=text-summary --reporter=html --reporter=lcov --report-dir=./coverage mocha test"
   },
