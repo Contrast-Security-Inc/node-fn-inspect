@@ -14,7 +14,7 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        node: [ 14, 12, 10 ]
+        node: [ 12, 14, 16 ]
         platform: [ macos-latest, windows-latest ]
     runs-on: ${{ matrix.platform }}
     name: ${{ matrix.platform }} Node ${{ matrix.node }} build/test
@@ -44,7 +44,7 @@ jobs:
   build-and-test-linux:
     strategy:
       matrix:
-        node: [ 14, 12, 10 ]
+        node: [ 12, 14, 16 ]
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/centos7-test
@@ -77,40 +77,40 @@ jobs:
       - run: mkdir artifact
       - uses: actions/download-artifact@v1
         with:
-          name: linux-14
-          path: artifact/linux-14
-      - uses: actions/download-artifact@v1
-        with:
           name: linux-12
           path: artifact/linux-12
       - uses: actions/download-artifact@v1
         with:
-          name: linux-10
-          path: artifact/linux-10
+          name: linux-14
+          path: artifact/linux-14
       - uses: actions/download-artifact@v1
         with:
-          name: macos-latest-14
-          path: artifact/darwin-14
+          name: linux-16
+          path: artifact/linux-16
       - uses: actions/download-artifact@v1
         with:
           name: macos-latest-12
           path: artifact/darwin-12
       - uses: actions/download-artifact@v1
         with:
-          name: macos-latest-10
-          path: artifact/darwin-10
+          name: macos-latest-14
+          path: artifact/darwin-14
       - uses: actions/download-artifact@v1
         with:
-          name: windows-latest-14
-          path: artifact/win32-14
+          name: macos-latest-16
+          path: artifact/darwin-16
       - uses: actions/download-artifact@v1
         with:
           name: windows-latest-12
           path: artifact/win32-12
       - uses: actions/download-artifact@v1
         with:
-          name: windows-latest-10
-          path: artifact/win32-10
+          name: windows-latest-14
+          path: artifact/win32-14
+      - uses: actions/download-artifact@v1
+        with:
+          name: windows-latest-16
+          path: artifact/win32-16
       - name: pack artifact
         run: |
           echo "artifacts" && ls artifact
@@ -134,7 +134,7 @@ jobs:
     strategy:
       matrix:
         platform: [ ubuntu-16.04, macos-latest, windows-latest ]
-        node: [ 10, 12, 14 ]
+        node: [ 12, 14, 16 ]
     name: ${{ matrix.platform }} Unit tests with artifact
     runs-on: ${{ matrix.platform }}
     steps:
