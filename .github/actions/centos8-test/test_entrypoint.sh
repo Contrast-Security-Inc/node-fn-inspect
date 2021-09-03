@@ -7,5 +7,6 @@ yum install -y python3
 yum install -y nodejs make gcc-c++ valgrind
 
 npm install --unsafe-perm
-chmod +x test/test.js
+chmod +x test/code-events.test.js
+chmod +x test/funcinfo.test.js
 npm run test:valgrind
