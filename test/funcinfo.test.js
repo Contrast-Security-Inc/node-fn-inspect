@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict';
 function inline() {}
 // eslint-disable-next-line node/no-unpublished-require
@@ -48,7 +49,7 @@ describe('funcinfo tests', function() {
   it('should return file and lineNumber for an inline function reference', function() {
     const results = funcinfo(inline);
     // line numbers start at 0 in v8
-    expect(results.lineNumber).to.equal(1);
+    expect(results.lineNumber).to.equal(2);
     const expectedPath = /funcinfo\.test\.js/;
     expect(results.file).to.match(expectedPath);
     expect(results.method).to.equal('inline');
