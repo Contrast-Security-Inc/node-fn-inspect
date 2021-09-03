@@ -9,17 +9,22 @@ JSON.parse(fs.readFileSync('./binding.gyp')).targets.forEach((target) => {
   targetNames.push(target.target_name);
 });
 const result = JSON.parse(convert.xml2json(xml, { compact: true }));
-const relatedErrors = result.valgrindoutput.error.filter((err) => {
-  let match = false;
-  err.stack.frame.forEach((frame) => {
-    targetNames.forEach((targetName) => {
-      if (frame.obj && frame.obj._text.indexOf(`${targetName}.node`) !== -1) {
-        match = true;
-      }
-    });
-  });
-  return match;
-});
+const relatedErrors = result.valgrindoutput.error
+  ? result.valgrindoutput.error.filter((err) => {
+      let match = false;
+      err.stack.frame.forEach((frame) => {
+        targetNames.forEach((targetName) => {
+          if (
+            frame.obj &&
+            frame.obj._text.indexOf(`${targetName}.node`) !== -1
+          ) {
+            match = true;
+          }
+        });
+      });
+      return match;
+    })
+  : [];
 
 if (relatedErrors.length > 0) {
   console.log('UNEXPECTED VALGRIND ERRORS');
