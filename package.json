@@ -60,7 +60,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.1",
     "mocha": "^7.1.2",
-    "node-gyp": "^6.1.0",
+    "node-gyp": "^8.2.0",
     "nyc": "^15.0.1",
     "prettier": "^1.19.1",
     "yargs-interactive": "^3.0.0"
