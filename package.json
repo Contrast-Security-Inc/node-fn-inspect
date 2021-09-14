@@ -37,15 +37,15 @@
   "files": [
     "code-event-types.js",
     "index.js",
-    "win32-10/**",
     "win32-12/**",
     "win32-14/**",
-    "linux-10/**",
+    "win32-16/**",
     "linux-12/**",
     "linux-14/**",
-    "darwin-10/**",
+    "linux-16/**",
     "darwin-12/**",
-    "darwin-14/**"
+    "darwin-14/**",
+    "darwin-16/**"
   ],
   "devDependencies": {
     "@contrast/eslint-config": "^2.0.0",
@@ -60,7 +60,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.1",
     "mocha": "^7.1.2",
-    "node-gyp": "^6.1.0",
+    "node-gyp": "^8.2.0",
     "nyc": "^15.0.1",
     "prettier": "^1.19.1",
     "yargs-interactive": "^3.0.0"

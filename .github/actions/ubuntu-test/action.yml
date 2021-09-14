@@ -1,6 +1,6 @@
 # action.yml
-name: 'Centos7 tests'
-description: 'Run tests on centos7'
+name: 'Ubuntu tests'
+description: 'Run tests on Ubuntu'
 inputs:
   node-version:
     description: 'Version of node'

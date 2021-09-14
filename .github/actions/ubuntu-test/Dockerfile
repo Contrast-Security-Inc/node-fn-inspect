@@ -1,4 +1,4 @@
-FROM centos:7
+FROM ubuntu:latest
 
 WORKDIR /distringuish
 COPY test_entrypoint.sh .
