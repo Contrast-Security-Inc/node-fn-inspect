@@ -27,11 +27,11 @@ yargsInteractive()
   })
   .then((releaseType) => {
     // Only bump version in local checkout if publishing artifact is successful
-    cp.exec(`npm version ${releaseType}`);
+    cp.execSync(`npm version ${releaseType}`);
   })
   .catch((err) => {
     console.log('Publishing failed:');
     console.log(err);
+    // eslint-disable-next-line no-process-exit
     process.exit(-1);
   });
-  
