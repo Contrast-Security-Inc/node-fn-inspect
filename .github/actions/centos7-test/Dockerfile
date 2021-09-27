@@ -1,4 +1,4 @@
-FROM ubuntu:18:04
+FROM centos:7
 
 WORKDIR /working
 COPY test_entrypoint.sh .
