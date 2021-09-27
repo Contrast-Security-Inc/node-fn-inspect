@@ -1,4 +1,4 @@
-FROM ubuntu:18:04
+FROM ubuntu:18.04
 
 WORKDIR /working
 COPY test_entrypoint.sh .
