@@ -6,3 +6,4 @@ build
 artifact
 .nyc_output
 coverage
+*~
