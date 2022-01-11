@@ -110,6 +110,8 @@ void Initialize(Local<Object> exports) {
   NODE_SET_METHOD(exports, "getNext", GetNext);
 }
 
-NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
+NODE_MODULE_INIT() {
+  Initialize(exports);
+}
 
 }  // namespace codeevents
