@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node: [ 16, 14, 12 ]
-        platform: [ macos-latest, windows-latest ]
+        platform: [ macos-latest, windows-2019 ]
     runs-on: ${{ matrix.platform }}
     name: ${{ matrix.platform }} Node ${{ matrix.node }} build/test
     steps:
@@ -119,15 +119,15 @@ jobs:
           path: artifact/darwin-12
       - uses: actions/download-artifact@v1
         with:
-          name: windows-latest-16
+          name: windows-2019-16
           path: artifact/win32-16
       - uses: actions/download-artifact@v1
         with:
-          name: windows-latest-14
+          name: windows-2019-14
           path: artifact/win32-14
       - uses: actions/download-artifact@v1
         with:
-          name: windows-latest-12
+          name: windows-2019-12
           path: artifact/win32-12
       - name: pack artifact
         run: |
@@ -151,7 +151,7 @@ jobs:
       USE_ARTIFACT: 1
     strategy:
       matrix:
-        platform: [ ubuntu-latest, macos-latest, windows-latest ]
+        platform: [ ubuntu-latest, macos-latest, windows-2019 ]
         node: [ 12, 14, 16 ]
     name: ${{ matrix.platform }} Unit tests with artifact
     runs-on: ${{ matrix.platform }}
