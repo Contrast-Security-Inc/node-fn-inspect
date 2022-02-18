@@ -1,20 +1,21 @@
 #!/usr/bin/env node
 'use strict';
-const yargsInteractive = require('yargs-interactive');
+
+const inquirer = require('inquirer');
 const cp = require('child_process');
 const fs = require('fs');
-const options = {
-  interactive: { default: true },
-  releaseType: {
+
+const questions = [
+  {
+    name: 'releaseType',
     type: 'list',
-    describe: 'What kind of release do you want to make?',
+    message: 'What kind of release do you want to make?',
     choices: ['patch', 'minor', 'major']
   }
-};
+];
 
-yargsInteractive()
-  .usage('$0 [args]')
-  .interactive(options)
+inquirer
+  .prompt(questions)
   .then(({ releaseType }) => {
     if (fs.existsSync('funcinfo.tgz.zip')) {
       cp.execSync(`${__dirname}/npm-publish.sh ${releaseType}`, {
