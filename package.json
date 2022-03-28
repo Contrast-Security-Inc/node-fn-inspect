@@ -1,6 +1,6 @@
 {
   "name": "@contrast/fn-inspect",
-  "version": "2.4.6",
+  "version": "2.4.7",
   "description": "Retrieve function name and line number from a function reference",
   "main": "index.js",
   "scripts": {
