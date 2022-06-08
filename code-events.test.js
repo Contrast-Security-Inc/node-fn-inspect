@@ -6,12 +6,12 @@ let setCodeEventListener, stopListening;
 
 if (process.env.USE_ARTIFACT) {
   // eslint-disable-next-line node/no-missing-require
-  ({ setCodeEventListener, stopListening } = require('../prebuilt/index'));
+  ({ setCodeEventListener, stopListening } = require('./prebuilt/index'));
   console.log(
     `Running tests with prebuilt for ${process.platform} ${process.version}`
   );
 } else {
-  ({ setCodeEventListener, stopListening } = require('..'));
+  ({ setCodeEventListener, stopListening } = require('.'));
   console.log('Running with locally built module');
 }
 

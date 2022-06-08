@@ -5,17 +5,17 @@ const { expect } = require('chai');
 let funcinfo;
 if (process.env.USE_ARTIFACT) {
   // eslint-disable-next-line node/no-missing-require
-  ({ funcinfo } = require('../prebuilt/index'));
+  ({ funcinfo } = require('./prebuilt/index'));
   console.log(
     `Running tests with prebuilt for ${process.platform} ${process.version}`
   );
 } else {
-  ({ funcinfo } = require('..'));
+  ({ funcinfo } = require('.'));
   console.log('Running with locally built module');
 }
 
 describe('funcinfo tests', function() {
-  const mod1 = require('./resources/module1');
+  const mod1 = require('./test/resources/module1');
   const expectedPath = /module1\.js/;
 
   it('should get file and lineNumber for an arrow function', function() {
