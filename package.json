@@ -21,15 +21,19 @@
   ],
   "main": "index.js",
   "scripts": {
+    "install": "node-gyp-build",
     "prepare": "husky install",
-    "prerelease": "node scripts/download-artifact.js",
-    "release": "node scripts/make-release.js",
-    "postrelease": "git push origin main && git push --tags",
+    "build": "prebuildify -t 12.13.0 -t 14.0.0 -t 16.0.0 --strip",
     "test": "c8 --reporter lcov --reporter text mocha .",
     "test:valgrind": "valgrind --xml=yes --xml-file=./valgrind.xml --trace-children=yes --leak-check=full --show-leak-kinds=all mocha . && node scripts/parse-valgrind.js"
   },
   "engines": {
     "node": ">=12.13.0"
+  },
+  "dependencies": {
+    "nan": "^2.16.0",
+    "node-addon-api": "^5.0.0",
+    "node-gyp-build": "^4.4.0"
   },
   "devDependencies": {
     "@contrast/eslint-config": "^3.1.1",
@@ -43,6 +47,7 @@
     "lint-staged": "^13.0.1",
     "mocha": "^10.0.0",
     "node-gyp": "^9.0.0",
+    "prebuildify": "^5.0.0",
     "xml-js": "^1.6.11"
   }
 }

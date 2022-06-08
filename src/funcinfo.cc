@@ -1,42 +1,29 @@
-#include <node.h>
+#include <nan.h>
+#include <v8.h>
 
-namespace FuncInfo {
+#include "funcinfo.h"
 
-using v8::FunctionCallbackInfo;
-using v8::Isolate;
-using v8::Local;
-using v8::NewStringType;
-using v8::Object;
-using v8::String;
-using v8::Value;
-using v8::Integer;
-using v8::Null;
+NAN_METHOD(FuncInfo) {
 
-void Method(const FunctionCallbackInfo<Value>& args) {
+    v8::Local<v8::Function> f = v8::Local<v8::Function>::Cast(info[0]);
+    v8::Isolate *isolate = info.GetIsolate();
+    v8::Local<v8::Context> context = isolate->GetCurrentContext();
 
-  Local<v8::Function> f = Local<v8::Function>::Cast(args[0]);
-  Isolate* isolate = args.GetIsolate();
-  Local<v8::Context> context = isolate->GetCurrentContext();
+    v8::Local<v8::Object> obj = v8::Object::New(isolate);
+    v8::Local<v8::Value> resourceName = f->GetScriptOrigin().ResourceName();
 
-  Local<v8::Object> obj = Object::New(isolate);
-  if (!f->GetScriptOrigin().ResourceName().IsEmpty()) {
-    obj->Set(context,
-             v8::String::NewFromUtf8(isolate, "file", v8::NewStringType::kNormal).ToLocalChecked(),
-             f->GetScriptOrigin().ResourceName());
-    obj->Set(context,
-             v8::String::NewFromUtf8(isolate, "lineNumber", v8::NewStringType::kNormal).ToLocalChecked(),
-             v8::Integer::New(isolate, f->GetScriptLineNumber()));
-  }
+    if (!resourceName.IsEmpty()) {
+        obj->Set(
+            context,
+            v8::String::NewFromUtf8(isolate, "file", v8::NewStringType::kNormal)
+                .ToLocalChecked(),
+            resourceName);
+        obj->Set(context,
+                 v8::String::NewFromUtf8(isolate, "lineNumber",
+                                         v8::NewStringType::kNormal)
+                     .ToLocalChecked(),
+                 v8::Integer::New(isolate, f->GetScriptLineNumber()));
+    }
 
-  args.GetReturnValue().Set(obj);
-}
-
-void Initialize(Local<Object> exports) {
-  NODE_SET_METHOD(exports, "funcinfo", Method);
-}
-
-NODE_MODULE_INIT() {
-  Initialize(exports);
-}
-
+    info.GetReturnValue().Set(obj);
 }

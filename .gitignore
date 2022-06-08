@@ -4,6 +4,7 @@ build
 *.swo
 *.swn
 artifact
+prebuilds/
 .nyc_output
 coverage
 *~

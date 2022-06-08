@@ -6,6 +6,6 @@ testMod.arrow = () => {
   return a;
 };
 
-testMod.named = function named() {}
+testMod.named = function named() {};
 
-testMod.anon = function() {}
+testMod.anon = function() {};
