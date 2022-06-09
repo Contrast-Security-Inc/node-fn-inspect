@@ -73,7 +73,7 @@ describe('fn-inspect', function () {
     let waitForLazyCompile;
     let handler;
 
-    beforeEach(function (done) {
+    before(function (done) {
       const events = [];
       let eventIndex = 0;
 
@@ -110,7 +110,7 @@ describe('fn-inspect', function () {
       }
     });
 
-    afterEach(function () {
+    after(function () {
       stopListening();
     });
 
