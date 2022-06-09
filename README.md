@@ -15,11 +15,11 @@ This module exposes some useful information from the underlying v8 engine.  Incl
 Getting details about a function:
 
 ```javascript
-  const { funcInfo } = require('@contrast/fn-inspect');
+  const { funcinfo } = require('@contrast/fn-inspect');
 
   function testFunction() {}
 
-  const results = funcInfo(testFunction);
+  const results = funcinfo(testFunction);
 
   // Returns an object with the following data
   // { lineNumber: 2, file: 'example.js', method: 'testFunction', type: 'Function' }

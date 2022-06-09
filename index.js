@@ -50,14 +50,12 @@ module.exports = {
    * @return {FunctionInfo}
    */
   funcinfo(fn) {
-    if (typeof fn === 'function') {
-      const info = binding.funcinfo(fn);
-      info.type = fn.__proto__.constructor.name;
-      info.method = fn.name;
-      return info;
-    } else {
-      return null;
-    }
+    if (typeof fn !== 'function') return null;
+
+    const info = binding.funcinfo(fn);
+    info.type = fn.__proto__.constructor.name;
+    info.method = fn.name;
+    return info;
   },
 
   /**
