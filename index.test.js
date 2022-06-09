@@ -2,15 +2,15 @@
 'use strict';
 
 const { expect } = require('chai');
-const { funcinfo, setCodeEventListener, stopListening } = require('.');
+const { funcInfo, setCodeEventListener, stopListening } = require('.');
 
 describe('fn-inspect', function () {
-  describe('funcinfo', function () {
+  describe('funcInfo', function () {
     const mod = require('./test/resources/module');
     const expectedPath = require.resolve('./test/resources/module.js');
 
     it('returns the correct info for an arrow function', function () {
-      const results = funcinfo(mod.arrow);
+      const results = funcInfo(mod.arrow);
 
       expect(results).to.deep.equal({
         file: expectedPath,
@@ -21,7 +21,7 @@ describe('fn-inspect', function () {
     });
 
     it('returns the correct info for a named function', function () {
-      const results = funcinfo(mod.named);
+      const results = funcInfo(mod.named);
 
       expect(results).to.deep.equal({
         file: expectedPath,
@@ -32,7 +32,7 @@ describe('fn-inspect', function () {
     });
 
     it('returns the correct info for an anonymous function', function () {
-      const results = funcinfo(mod.anon);
+      const results = funcInfo(mod.anon);
 
       expect(results).to.deep.equal({
         file: expectedPath,
@@ -45,7 +45,7 @@ describe('fn-inspect', function () {
     it('returns the correct info for an inline function', function () {
       function inline() {}
 
-      const results = funcinfo(inline);
+      const results = funcInfo(inline);
       expect(results).to.deep.equal({
         file: __filename,
         lineNumber: 45, // line numbers start at 0 in v8
@@ -57,7 +57,7 @@ describe('fn-inspect', function () {
     it('returns the correct info for an async inline function', function () {
       async function inlineAsync() {}
 
-      const results = funcinfo(inlineAsync);
+      const results = funcInfo(inlineAsync);
       expect(results).to.deep.equal({
         file: __filename,
         lineNumber: 57, // line numbers start at 0 in v8
@@ -76,7 +76,7 @@ describe('fn-inspect', function () {
     ].forEach(({ type, value }) => {
       it(`returns null for a ${type}`, function () {
         // @ts-expect-error these arguments are not functions
-        const results = funcinfo(value);
+        const results = funcInfo(value);
         expect(results).to.equal(null);
       });
     });

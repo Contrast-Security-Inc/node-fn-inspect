@@ -2,7 +2,7 @@
 #include <v8.h>
 
 #include "code-events.h"
-#include "funcinfo.h"
+#include "func-info.h"
 
 using namespace v8;
 
@@ -26,7 +26,7 @@ NAN_MODULE_INIT(Init) {
         target, Nan::New<String>("codeEvents").ToLocalChecked(), codeEvents);
 
     Nan::Set(target,
-             Nan::New<String>("funcinfo").ToLocalChecked(),
+             Nan::New<String>("funcInfo").ToLocalChecked(),
              Nan::GetFunction(Nan::New<FunctionTemplate>(FuncInfo))
                  .ToLocalChecked());
 }

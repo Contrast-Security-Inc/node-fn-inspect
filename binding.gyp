@@ -6,7 +6,7 @@
         "src/addon.cc",
         "src/code-events.cc",
         "src/event-queue.cc",
-        "src/funcinfo.cc"
+        "src/func-info.cc"
       ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")"

@@ -49,10 +49,10 @@ module.exports = {
    * @param {Function} fn function reference to obtain info
    * @return {FunctionInfo}
    */
-  funcinfo(fn) {
+  funcInfo(fn) {
     if (typeof fn !== 'function') return null;
 
-    const info = binding.funcinfo(fn);
+    const info = binding.funcInfo(fn);
     info.type = fn.__proto__.constructor.name;
     info.method = fn.name;
     return info;

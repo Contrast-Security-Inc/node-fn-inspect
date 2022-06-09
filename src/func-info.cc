@@ -1,4 +1,4 @@
-#include "funcinfo.h"
+#include "func-info.h"
 
 using namespace v8;
 

@@ -30,7 +30,7 @@ declare interface CodeEvent {
 
 declare const fnInspect: {
   /** Retrieves name, type, lineNumber and file from a function reference */
-  funcinfo(fn: Function): FunctionInfo;
+  funcInfo(fn: Function): FunctionInfo;
 
   /**
    * Sets the function for processing v8 code events.

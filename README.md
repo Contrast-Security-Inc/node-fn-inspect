@@ -13,11 +13,11 @@ including:
 Getting details about a function:
 
 ```js
-const { funcinfo } = require('@contrast/fn-inspect');
+const { funcInfo } = require('@contrast/fn-inspect');
 
 function testFn() {}
 
-const results = funcinfo(testFn);
+const results = funcInfo(testFn);
 // => { lineNumber: 2, file: 'example.js', method: 'testFn', type: 'Function' }
 ```
 
