@@ -1,3 +1,4 @@
+// @ts-check
 'use strict';
 
 const { expect } = require('chai');
@@ -47,7 +48,7 @@ describe('fn-inspect', function () {
       const results = funcinfo(inline);
       expect(results).to.deep.equal({
         file: __filename,
-        lineNumber: 44, // line numbers start at 0 in v8
+        lineNumber: 45, // line numbers start at 0 in v8
         method: 'inline',
         type: 'Function',
       });
@@ -61,39 +62,44 @@ describe('fn-inspect', function () {
       { type: 'object', value: { unit: 'test' } },
     ].forEach(({ type, value }) => {
       it(`returns null for a ${type}`, function () {
+        // @ts-expect-error these arguments are not functions
         const results = funcinfo(value);
         expect(results).to.equal(null);
       });
     });
   });
 
-  describe('addCodeEventListener', function () {
-    let events = [];
-    let eventIndex = 0;
-    function waitForLazyCompile({ name }) {
-      return new Promise((resolve) => {
-        const _interval = setInterval(() => {
-          for (let i = eventIndex; i < events.length; i++, eventIndex++) {
-            if (events[i].func === name) {
-              clearInterval(_interval);
-              resolve(events[i]);
-              return;
+  describe('setCodeEventListener', function () {
+    let waitForLazyCompile;
+    let handler;
+
+    beforeEach(function (done) {
+      const events = [];
+      let eventIndex = 0;
+
+      waitForLazyCompile = (name) =>
+        new Promise((resolve) => {
+          const _interval = setInterval(() => {
+            for (let i = eventIndex; i < events.length; i++, eventIndex++) {
+              if (events[i].func === name) {
+                clearInterval(_interval);
+                resolve(events[i]);
+                return;
+              }
             }
-          }
-        }, 10);
-      });
-    }
+          }, 10);
+        });
 
-    function handler(event) {
-      // this is technically a memory leak as we're just always
-      // appending to the array of events and never releasing them
-      // to be GC'ed.  Not a good idea in practice, but fine for
-      // these unit tests
-      events.push(event);
-    }
+      handler = (event) => {
+        // this is technically a memory leak as we're just always
+        // appending to the array of events and never releasing them
+        // to be GC'ed.  Not a good idea in practice, but fine for
+        // these unit tests
+        events.push(event);
+      };
 
-    before(function (done) {
       setCodeEventListener(handler);
+
       // in CI it takes a long time for windows to
       // get through the initial burst of available code events
       if (process.platform === 'win32') {
@@ -104,30 +110,41 @@ describe('fn-inspect', function () {
       }
     });
 
-    after(function () {
+    afterEach(function () {
       stopListening();
-      events = [];
     });
 
-    it('should report simple lazy_compile events', function () {
+    it('reports simple lazy_compile events', async function () {
       function testfunc1() {
         return 1 + 2;
       }
+
       testfunc1();
-      return waitForLazyCompile({ name: 'testfunc1' }).then((event) => {
-        expect(event.script).to.equal(__filename);
+
+      const event = await waitForLazyCompile('testfunc1');
+      expect(event).to.deep.equal({
+        func: 'testfunc1',
+        lineNum: 118,
+        script: __filename,
+        type: 'LAZY_COMPILE',
       });
     });
 
-    it('should report arrow function', function () {
+    it('reports arrow function', async function () {
       const testfunc2 = () => 1 + 2;
+
       testfunc2();
-      return waitForLazyCompile({ name: 'testfunc2' }).then((event) => {
-        expect(event.script).to.equal(__filename);
+
+      const event = await waitForLazyCompile('testfunc2');
+      expect(event).to.deep.equal({
+        func: 'testfunc2',
+        lineNum: 134,
+        script: __filename,
+        type: 'LAZY_COMPILE',
       });
     });
 
-    it('should report class functions', function () {
+    it('reports class functions', async function () {
       class MyClass {
         constructor() {
           this.foo = 123;
@@ -137,41 +154,62 @@ describe('fn-inspect', function () {
           return this.foo + 2;
         }
       }
+
       const instance = new MyClass();
       instance.bar();
-      return waitForLazyCompile({ name: 'MyClass' })
-        .then((event) => {
-          expect(event.script).to.equal(__filename);
-          return waitForLazyCompile({ name: 'bar' });
-        })
-        .then((event) => {
-          expect(event.script).to.equal(__filename);
-        });
-    });
 
-    it('should report delayed function', function () {
-      const declareTime = Date.now();
-      const testfunc3 = () => 1 + 2;
-      setTimeout(testfunc3, 1500);
-      return waitForLazyCompile({ name: 'testfunc3' }).then((event) => {
-        expect(event.script).to.equal(__filename);
-        // settimeout isn't exact but it should be a close to 1.5 seconds after declaration
-        expect(Date.now() - declareTime).to.be.above(1250);
+      const event1 = await waitForLazyCompile('MyClass');
+      expect(event1).to.deep.equal({
+        func: 'MyClass',
+        lineNum: 149,
+        script: __filename,
+        type: 'LAZY_COMPILE',
+      });
+
+      const event2 = await waitForLazyCompile('bar');
+      expect(event2).to.deep.equal({
+        func: 'bar',
+        lineNum: 153,
+        script: __filename,
+        type: 'LAZY_COMPILE',
       });
     });
 
-    it('should be able to change the listener function', function () {
+    it('reports delayed function', async function () {
+      const declareTime = Date.now();
+
+      const testfunc3 = () => 1 + 2;
+      setTimeout(testfunc3, 1500);
+
+      const event = await waitForLazyCompile('testfunc3');
+      expect(event).to.deep.equal({
+        func: 'testfunc3',
+        lineNum: 181,
+        script: __filename,
+        type: 'LAZY_COMPILE',
+      });
+
+      // setTimeout isn't exact but it should be close to 1.5 seconds after declaration
+      expect(Date.now() - declareTime).to.be.above(1250);
+    });
+
+    it('should be able to change the listener function', async function () {
       let newListenerCalled = false;
       setCodeEventListener(function (event) {
-        events.push(event);
         newListenerCalled = true;
+        handler(event);
       });
 
       const testfunc4 = () => 1 + 2;
       testfunc4();
-      return waitForLazyCompile({ name: 'testfunc4' }).then((event) => {
-        expect(event.script).to.equal(__filename);
-        expect(newListenerCalled).to.be.true;
+
+      const event = await waitForLazyCompile('testfunc4');
+      expect(newListenerCalled).to.be.true;
+      expect(event).to.deep.equal({
+        func: 'testfunc4',
+        lineNum: 203,
+        script: __filename,
+        type: 'LAZY_COMPILE',
       });
     });
   });
