@@ -83,7 +83,7 @@ describe('fn-inspect', function () {
   });
 
   describe('setCodeEventListener', function () {
-    const TIMEOUT = process.platform === 'win32' ? 61000 : 5000;
+    const TIMEOUT = process.platform === 'win32' ? 61000 : 10000;
     this.timeout(TIMEOUT);
 
     let waitForLazyCompile;
