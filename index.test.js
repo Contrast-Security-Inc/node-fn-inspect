@@ -70,6 +70,9 @@ describe('fn-inspect', function () {
   });
 
   describe('setCodeEventListener', function () {
+    const TIMEOUT = process.platform === 'win32' ? 61000 : 5000;
+    this.timeout(TIMEOUT);
+
     let waitForLazyCompile;
     let handler;
 
@@ -100,11 +103,10 @@ describe('fn-inspect', function () {
 
       setCodeEventListener(handler);
 
-      // in CI it takes a long time for windows to
-      // get through the initial burst of available code events
+      // in CI it takes a long time for windows to get through the initial burst
+      // of available code events
       if (process.platform === 'win32') {
-        this.timeout(61000);
-        setTimeout(done, 60000);
+        setTimeout(done, TIMEOUT - 1000);
       } else {
         done();
       }
