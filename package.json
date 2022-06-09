@@ -32,6 +32,7 @@
     "build:darwin-x64+arm64": "npm run build -- --arch x64+arm64",
     "build:win32-x64": "npm run build",
     "clean": "rimraf build/ coverage/ prebuilds/",
+    "download": "node scripts/download-artifacts.js",
     "test": "c8 --reporter lcov --reporter text mocha .",
     "test:valgrind": "valgrind --xml=yes --xml-file=./valgrind.xml --trace-children=yes --leak-check=full --show-leak-kinds=all mocha . && node scripts/parse-valgrind.js"
   },
