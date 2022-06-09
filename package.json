@@ -16,14 +16,22 @@
   },
   "homepage": "https://github.com/Contrast-Security-Inc/node-fn-inspect#readme",
   "files": [
-    "code-event-types.js",
+    "prebuilds/",
+    "src/",
+    "binding.gyp",
+    "index.d.ts",
     "index.js"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "install": "node-gyp-build",
     "prepare": "husky install",
-    "build": "prebuildify -t 12.13.0 -t 14.0.0 -t 16.0.0 --strip",
+    "build": "prebuildify -t 12.13.0 -t 14.15.0 -t 16.9.1 --strip",
+    "build:linux-x64": "prebuildify-cross -i centos7-devtoolset7 -i alpine -t 12.13.0 -t 14.15.0 -t 16.9.1 --strip",
+    "build:darwin-x64+arm64": "npm run build -- --arch x64+arm64",
+    "build:win32-x64": "npm run build",
+    "clean": "rimraf build/ coverage/ prebuilds/",
     "test": "c8 --reporter lcov --reporter text mocha .",
     "test:valgrind": "valgrind --xml=yes --xml-file=./valgrind.xml --trace-children=yes --leak-check=full --show-leak-kinds=all mocha . && node scripts/parse-valgrind.js"
   },
@@ -47,6 +55,9 @@
     "mocha": "^10.0.0",
     "node-gyp": "^9.0.0",
     "prebuildify": "^5.0.0",
+    "prebuildify-cross": "^5.0.0",
+    "rimraf": "^3.0.2",
+    "unzipper": "^0.10.11",
     "xml-js": "^1.6.11"
   }
 }
