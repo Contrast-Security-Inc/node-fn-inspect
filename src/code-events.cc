@@ -37,12 +37,13 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
 FnInspectCodeEventHandler *handler;
 
 NAN_METHOD(InitHandler) {
-    Isolate *isolate = info.GetIsolate();
-    handler = new FnInspectCodeEventHandler(isolate);
+    handler = new FnInspectCodeEventHandler(info.GetIsolate());
     handler->Enable();
 }
 
 NAN_METHOD(DeinitHandler) {
+    handler->Disable();
+
     delete handler;
     handler = NULL;
 }

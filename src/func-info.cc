@@ -3,7 +3,7 @@
 using namespace v8;
 
 NAN_METHOD(FuncInfo) {
-    Local<Function> fn = Local<Function>::Cast(info[0]);
+    Local<Function> fn = info[0].As<Function>();
 
     Local<Object> obj = Nan::New<Object>();
     Local<Value> resourceName = fn->GetScriptOrigin().ResourceName();
