@@ -4,24 +4,30 @@
 #include "code-events.h"
 #include "funcinfo.h"
 
+using namespace v8;
+
 NAN_MODULE_INIT(Init) {
-    v8::Local<v8::Object> codeEvents = Nan::New<v8::Object>();
+    Local<Object> codeEvents = Nan::New<Object>();
 
-    Nan::Set(codeEvents, Nan::New<v8::String>("initHandler").ToLocalChecked(),
-             Nan::GetFunction(Nan::New<v8::FunctionTemplate>(InitHandler))
+    Nan::Set(codeEvents,
+             Nan::New<String>("initHandler").ToLocalChecked(),
+             Nan::GetFunction(Nan::New<FunctionTemplate>(InitHandler))
                  .ToLocalChecked());
-    Nan::Set(codeEvents, Nan::New<v8::String>("deinitHandler").ToLocalChecked(),
-             Nan::GetFunction(Nan::New<v8::FunctionTemplate>(DeinitHandler))
+    Nan::Set(codeEvents,
+             Nan::New<String>("deinitHandler").ToLocalChecked(),
+             Nan::GetFunction(Nan::New<FunctionTemplate>(DeinitHandler))
                  .ToLocalChecked());
-    Nan::Set(codeEvents, Nan::New<v8::String>("getNext").ToLocalChecked(),
-             Nan::GetFunction(Nan::New<v8::FunctionTemplate>(GetNext))
-                 .ToLocalChecked());
+    Nan::Set(
+        codeEvents,
+        Nan::New<String>("getNext").ToLocalChecked(),
+        Nan::GetFunction(Nan::New<FunctionTemplate>(GetNext)).ToLocalChecked());
 
-    Nan::Set(target, Nan::New<v8::String>("codeEvents").ToLocalChecked(),
-             codeEvents);
+    Nan::Set(
+        target, Nan::New<String>("codeEvents").ToLocalChecked(), codeEvents);
 
-    Nan::Set(target, Nan::New<v8::String>("funcinfo").ToLocalChecked(),
-             Nan::GetFunction(Nan::New<v8::FunctionTemplate>(FuncInfo))
+    Nan::Set(target,
+             Nan::New<String>("funcinfo").ToLocalChecked(),
+             Nan::GetFunction(Nan::New<FunctionTemplate>(FuncInfo))
                  .ToLocalChecked());
 }
 

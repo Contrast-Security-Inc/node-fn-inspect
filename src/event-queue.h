@@ -1,8 +1,11 @@
 #ifndef EVENT_QUEUE_H_
 #define EVENT_QUEUE_H_
 
-#include <v8.h>
+#include <nan.h>
 #include <v8-profiler.h>
+#include <v8.h>
+
+using namespace v8;
 
 class EventNode {
   public:
@@ -33,7 +36,7 @@ class EventQueue {
   public:
     EventQueue();
     ~EventQueue();
-    void enqueue(v8::CodeEvent *event, v8::Isolate *isolate);
+    void enqueue(CodeEvent *event);
     EventNode *dequeue();
     unsigned int length;
 

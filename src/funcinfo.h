@@ -2,6 +2,7 @@
 #define FUNCINFO_H_
 
 #include <nan.h>
+#include <v8.h>
 
 NAN_METHOD(FuncInfo);
 

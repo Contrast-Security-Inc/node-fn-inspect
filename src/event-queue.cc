@@ -1,7 +1,9 @@
-#include <v8.h>
 #include <v8-profiler.h>
+#include <v8.h>
 
 #include "event-queue.h"
+
+using namespace v8;
 
 EventQueue::EventQueue() {
     this->head = NULL;
@@ -19,17 +21,17 @@ EventQueue::~EventQueue() {
     }
 }
 
-void EventQueue::enqueue(v8::CodeEvent *event, v8::Isolate *isolate) {
-    if (v8::String::Utf8Value(isolate, event->GetScriptName()).length() == 0) {
+void EventQueue::enqueue(CodeEvent *event) {
+    if (Nan::Utf8String(event->GetScriptName()).length() == 0)
         return;
-    }
+
     EventNode *node = new EventNode();
+
     node->type = event->GetCodeType();
-    node->script =
-        strdup(*v8::String::Utf8Value(isolate, event->GetScriptName()));
-    node->func =
-        strdup(*v8::String::Utf8Value(isolate, event->GetFunctionName()));
+    node->script = strdup(*Nan::Utf8String(event->GetScriptName()));
+    node->func = strdup(*Nan::Utf8String(event->GetFunctionName()));
     node->lineNum = event->GetScriptLine();
+
     if (this->tail) {
         this->tail->next = node;
         this->tail = node;
@@ -37,19 +39,23 @@ void EventQueue::enqueue(v8::CodeEvent *event, v8::Isolate *isolate) {
         this->head = node;
         this->tail = node;
     }
+
     this->length += 1;
 }
 
 EventNode *EventQueue::dequeue() {
     EventNode *node = this->head;
-    if (node) {
-        this->head = this->head->next;
-        if (this->head == NULL) {
-            this->tail = NULL;
-        }
-        this->length -= 1;
-        return node;
-    } else {
+
+    if (!node)
         return NULL;
+
+    this->head = this->head->next;
+
+    if (this->head == NULL) {
+        this->tail = NULL;
     }
+
+    this->length -= 1;
+
+    return node;
 }

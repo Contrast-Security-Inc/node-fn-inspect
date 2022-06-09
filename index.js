@@ -1,7 +1,6 @@
 'use strict';
 
 const binding = require('node-gyp-build')(__dirname);
-console.log(binding);
 
 /**
  * ```
