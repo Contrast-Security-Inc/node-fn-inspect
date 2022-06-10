@@ -14,11 +14,10 @@ module.exports = {
    * @return {FunctionInfo}
    */
   funcInfo(fn) {
-    if (typeof fn !== 'function') return null;
-
     const info = binding.funcInfo(fn);
+    if (info === null) return null;
+
     info.type = fn.__proto__.constructor.name;
-    info.method = fn.name;
     return info;
   },
 
