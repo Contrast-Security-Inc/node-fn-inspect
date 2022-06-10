@@ -9,23 +9,21 @@ declare interface FunctionInfo {
 
 declare interface CodeEvent {
   func: string;
-  lineNum: number;
+  lineNumber: number;
   script: string;
   type:
-  | 'BUILTIN'
-  | 'CALLBACK'
-  | 'EVAL'
-  | 'FUNCTION'
-  | 'INTERPRETED_FUNCTION'
-  | 'HANDLER'
-  | 'BYTECODE_HANDLER'
-  | 'LAZY_COMPILE'
-  | 'REG_EXP'
-  | 'SCRIPT'
-  | 'STUB'
-  | 'NATIVE_FUNCTION'
-  | 'NATIVE_LAZY_COMPILE'
-  | 'NATIVE_SCRIPT';
+  | 'Builtin'
+  | 'Callback'
+  | 'Eval'
+  | 'Function'
+  | 'InterpretedFunction'
+  | 'Handler'
+  | 'BytecodeHandler'
+  | 'LazyCompile'
+  | 'RegExp'
+  | 'Script'
+  | 'Stub'
+  | 'Relocation'
 }
 
 declare const fnInspect: {

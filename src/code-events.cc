@@ -57,17 +57,17 @@ NAN_METHOD(getNextCodeEvent) {
     Local<Object> obj = Nan::New<Object>();
 
     Nan::Set(obj,
-             Nan::New<String>("script").ToLocalChecked(),
-             Nan::New<String>(node->script).ToLocalChecked());
+             Nan::New("script").ToLocalChecked(),
+             Nan::New(node->script).ToLocalChecked());
     Nan::Set(obj,
-             Nan::New<String>("func").ToLocalChecked(),
-             Nan::New<String>(node->func).ToLocalChecked());
+             Nan::New("func").ToLocalChecked(),
+             Nan::New(node->func).ToLocalChecked());
     Nan::Set(obj,
-             Nan::New<String>("type").ToLocalChecked(),
-             Nan::New<Integer>(node->type));
+             Nan::New("type").ToLocalChecked(),
+             Nan::New(node->type).ToLocalChecked());
     Nan::Set(obj,
-             Nan::New<String>("lineNum").ToLocalChecked(),
-             Nan::New<Integer>(node->lineNum));
+             Nan::New("lineNumber").ToLocalChecked(),
+             Nan::New(node->lineNumber));
 
     info.GetReturnValue().Set(obj);
 

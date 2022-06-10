@@ -9,10 +9,10 @@ NAN_METHOD(funcInfo) {
     Local<Value> resourceName = fn->GetScriptOrigin().ResourceName();
 
     if (!resourceName.IsEmpty()) {
-        Nan::Set(obj, Nan::New<String>("file").ToLocalChecked(), resourceName);
+        Nan::Set(obj, Nan::New("file").ToLocalChecked(), resourceName);
         Nan::Set(obj,
-                 Nan::New<String>("lineNumber").ToLocalChecked(),
-                 Nan::New<Integer>(fn->GetScriptLineNumber()));
+                 Nan::New("lineNumber").ToLocalChecked(),
+                 Nan::New(fn->GetScriptLineNumber()));
     }
 
     info.GetReturnValue().Set(obj);

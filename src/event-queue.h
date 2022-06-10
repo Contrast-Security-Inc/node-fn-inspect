@@ -9,12 +9,13 @@ using namespace v8;
 
 class EventNode {
   public:
-    int type;
+    char *type;
     char *script;
     char *func;
-    int lineNum;
+    int lineNumber;
     EventNode *next;
     ~EventNode() {
+        free(this->type);
         free(this->script);
         free(this->func);
     }

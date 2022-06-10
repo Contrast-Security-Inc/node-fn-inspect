@@ -27,10 +27,10 @@ void EventQueue::enqueue(CodeEvent *event) {
 
     EventNode *node = new EventNode();
 
-    node->type = event->GetCodeType();
+    node->type = strdup(CodeEvent::GetCodeEventTypeName(event->GetCodeType()));
     node->script = strdup(*Nan::Utf8String(event->GetScriptName()));
     node->func = strdup(*Nan::Utf8String(event->GetFunctionName()));
-    node->lineNum = event->GetScriptLine();
+    node->lineNumber = event->GetScriptLine();
 
     if (this->tail) {
         this->tail->next = node;

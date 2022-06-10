@@ -2,23 +2,6 @@
 
 const binding = require('node-gyp-build')(__dirname);
 
-// From v8-profiler.h
-const CODE_EVENT_TYPES = [
-  '', // unknown
-  'BUILTIN',
-  'CALLBACK',
-  'EVAL',
-  'FUNCTION',
-  'INTERPRETED_FUNCTION',
-  'HANDLER',
-  'BYTECODE_HANDLER',
-  'LAZY_COMPILE',
-  'REG_EXP',
-  'SCRIPT',
-  'STUB',
-  'RELOCATION',
-];
-
 let codeEventsInited = false;
 let codeEventListener = null;
 let timer = null;
@@ -58,10 +41,7 @@ module.exports = {
     codeEventListener = cb;
     timer = setInterval(() => {
       const codeEvent = binding.getNextCodeEvent();
-      if (codeEvent) {
-        codeEvent.type = CODE_EVENT_TYPES[codeEvent.type];
-        codeEventListener(codeEvent);
-      }
+      if (codeEvent) codeEventListener(codeEvent);
     }, interval);
   },
 

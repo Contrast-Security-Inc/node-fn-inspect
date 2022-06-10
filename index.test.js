@@ -129,7 +129,7 @@ describe('fn-inspect', function () {
       stopListening();
     });
 
-    it('reports simple lazy_compile events', async function () {
+    it('reports simple LazyCompile events', async function () {
       function testfunc1() {
         return 1 + 2;
       }
@@ -139,9 +139,9 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc1');
       expect(event).to.deep.equal({
         func: 'testfunc1',
-        lineNum: 133,
+        lineNumber: 133,
         script: __filename,
-        type: 'LAZY_COMPILE',
+        type: 'LazyCompile',
       });
     });
 
@@ -153,9 +153,9 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc2');
       expect(event).to.deep.equal({
         func: 'testfunc2',
-        lineNum: 149,
+        lineNumber: 149,
         script: __filename,
-        type: 'LAZY_COMPILE',
+        type: 'LazyCompile',
       });
     });
 
@@ -176,17 +176,17 @@ describe('fn-inspect', function () {
       const event1 = await waitForLazyCompile('MyClass');
       expect(event1).to.deep.equal({
         func: 'MyClass',
-        lineNum: 164,
+        lineNumber: 164,
         script: __filename,
-        type: 'LAZY_COMPILE',
+        type: 'LazyCompile',
       });
 
       const event2 = await waitForLazyCompile('bar');
       expect(event2).to.deep.equal({
         func: 'bar',
-        lineNum: 168,
+        lineNumber: 168,
         script: __filename,
-        type: 'LAZY_COMPILE',
+        type: 'LazyCompile',
       });
     });
 
@@ -199,9 +199,9 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc3');
       expect(event).to.deep.equal({
         func: 'testfunc3',
-        lineNum: 196,
+        lineNumber: 196,
         script: __filename,
-        type: 'LAZY_COMPILE',
+        type: 'LazyCompile',
       });
 
       // setTimeout isn't exact but it should be close to 1.5 seconds after declaration
@@ -222,9 +222,9 @@ describe('fn-inspect', function () {
       expect(newListenerCalled).to.be.true;
       expect(event).to.deep.equal({
         func: 'testfunc4',
-        lineNum: 218,
+        lineNumber: 218,
         script: __filename,
-        type: 'LAZY_COMPILE',
+        type: 'LazyCompile',
       });
     });
   });
