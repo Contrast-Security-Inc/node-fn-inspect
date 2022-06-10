@@ -66,18 +66,13 @@ describe('fn-inspect', function () {
       });
     });
 
-
-    [
-      { type: 'string', value: 'hi' },
-      { type: 'int', value: 100 },
-      { type: 'boolean', value: true },
-      { type: 'array', value: [1, 2, 3] },
-      { type: 'object', value: { unit: 'test' } },
-    ].forEach(({ type, value }) => {
-      it(`returns null for a ${type}`, function () {
-        // @ts-expect-error these arguments are not functions
-        const results = funcInfo(value);
-        expect(results).to.equal(null);
+    describe('non-function args', function () {
+      ['hi', 100, true, [1, 2, 3], { unit: 'test' }].forEach((value) => {
+        it(`returns null when passed a ${value.constructor.name}`, function () {
+          // @ts-expect-error these arguments are not functions
+          const results = funcInfo(value);
+          expect(results).to.equal(null);
+        });
       });
     });
   });
@@ -139,7 +134,7 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc1');
       expect(event).to.deep.equal({
         func: 'testfunc1',
-        lineNumber: 133,
+        lineNumber: 128,
         script: __filename,
         type: 'LazyCompile',
       });
@@ -153,7 +148,7 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc2');
       expect(event).to.deep.equal({
         func: 'testfunc2',
-        lineNumber: 149,
+        lineNumber: 144,
         script: __filename,
         type: 'LazyCompile',
       });
@@ -176,7 +171,7 @@ describe('fn-inspect', function () {
       const event1 = await waitForLazyCompile('MyClass');
       expect(event1).to.deep.equal({
         func: 'MyClass',
-        lineNumber: 164,
+        lineNumber: 159,
         script: __filename,
         type: 'LazyCompile',
       });
@@ -184,7 +179,7 @@ describe('fn-inspect', function () {
       const event2 = await waitForLazyCompile('bar');
       expect(event2).to.deep.equal({
         func: 'bar',
-        lineNumber: 168,
+        lineNumber: 163,
         script: __filename,
         type: 'LazyCompile',
       });
@@ -199,7 +194,7 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc3');
       expect(event).to.deep.equal({
         func: 'testfunc3',
-        lineNumber: 196,
+        lineNumber: 191,
         script: __filename,
         type: 'LazyCompile',
       });
@@ -222,7 +217,7 @@ describe('fn-inspect', function () {
       expect(newListenerCalled).to.be.true;
       expect(event).to.deep.equal({
         func: 'testfunc4',
-        lineNumber: 218,
+        lineNumber: 213,
         script: __filename,
         type: 'LazyCompile',
       });

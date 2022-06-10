@@ -11,13 +11,13 @@ module.exports = {
    * Retrieves name, type, lineNumber and file from a function reference
    *
    * @param {Function} fn function reference to obtain info
-   * @return {FunctionInfo}
+   * @return {FunctionInfo | null}
    */
   funcInfo(fn) {
     const info = binding.funcInfo(fn);
     if (info === null) return null;
 
-    info.type = fn.__proto__.constructor.name;
+    info.type = fn.constructor.name;
     return info;
   },
 
