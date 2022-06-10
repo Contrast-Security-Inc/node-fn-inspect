@@ -53,11 +53,11 @@ module.exports = {
       return;
     }
 
-    binding.codeEvents.initHandler();
+    binding.initHandler();
     codeEventsInited = true;
     codeEventListener = cb;
     timer = setInterval(() => {
-      const codeEvent = binding.codeEvents.getNext();
+      const codeEvent = binding.getNextCodeEvent();
       if (codeEvent) {
         codeEvent.type = CODE_EVENT_TYPES[codeEvent.type];
         codeEventListener(codeEvent);
@@ -72,7 +72,7 @@ module.exports = {
     if (!codeEventsInited) return;
 
     clearInterval(timer);
-    binding.codeEvents.deinitHandler();
+    binding.deinitHandler();
     codeEventListener = null;
     codeEventsInited = false;
   },

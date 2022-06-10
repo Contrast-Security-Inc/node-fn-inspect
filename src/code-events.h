@@ -7,8 +7,8 @@
 
 #include "event-queue.h"
 
-NAN_METHOD(InitHandler);
-NAN_METHOD(DeinitHandler);
-NAN_METHOD(GetNext);
+NAN_METHOD(initHandler);
+NAN_METHOD(deinitHandler);
+NAN_METHOD(getNextCodeEvent);
 
 #endif // CODE_EVENTS_H_

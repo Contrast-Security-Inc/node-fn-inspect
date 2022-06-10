@@ -2,7 +2,7 @@
 
 using namespace v8;
 
-NAN_METHOD(FuncInfo) {
+NAN_METHOD(funcInfo) {
     Local<Function> fn = info[0].As<Function>();
 
     Local<Object> obj = Nan::New<Object>();

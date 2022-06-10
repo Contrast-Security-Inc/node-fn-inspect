@@ -36,19 +36,19 @@ class FnInspectCodeEventHandler : public CodeEventHandler {
 
 FnInspectCodeEventHandler *handler;
 
-NAN_METHOD(InitHandler) {
+NAN_METHOD(initHandler) {
     handler = new FnInspectCodeEventHandler(info.GetIsolate());
     handler->Enable();
 }
 
-NAN_METHOD(DeinitHandler) {
+NAN_METHOD(deinitHandler) {
     handler->Disable();
 
     delete handler;
     handler = NULL;
 }
 
-NAN_METHOD(GetNext) {
+NAN_METHOD(getNextCodeEvent) {
     EventNode *node = handler->dequeue();
 
     if (!node)
