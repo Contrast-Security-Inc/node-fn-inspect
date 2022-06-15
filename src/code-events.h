@@ -1,5 +1,4 @@
-#ifndef CODE_EVENTS_H_
-#define CODE_EVENTS_H_
+#pragma once
 
 #include <nan.h>
 #include <v8-profiler.h>
@@ -10,5 +9,3 @@
 NAN_METHOD(initHandler);
 NAN_METHOD(deinitHandler);
 NAN_METHOD(getNextCodeEvent);
-
-#endif // CODE_EVENTS_H_

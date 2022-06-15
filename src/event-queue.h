@@ -1,5 +1,4 @@
-#ifndef EVENT_QUEUE_H_
-#define EVENT_QUEUE_H_
+#pragma once
 
 #include <nan.h>
 #include <v8-profiler.h>
@@ -45,5 +44,3 @@ class EventQueue {
     EventNode *head;
     EventNode *tail;
 };
-
-#endif // EVENT_QUEUE_H_
