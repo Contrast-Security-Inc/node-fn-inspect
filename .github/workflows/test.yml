@@ -25,6 +25,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-2019]
     name: Node v${{ matrix.node }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v3
