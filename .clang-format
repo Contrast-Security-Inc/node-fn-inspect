@@ -1,0 +1,6 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+AllowShortFunctionsOnASingleLine: None
+BinPackArguments: False
+NamespaceIndentation: All
+IncludeBlocks: Preserve

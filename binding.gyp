@@ -1,16 +1,32 @@
 {
   "targets": [
     {
-      "target_name": "funcinfo",
+      "target_name": "fninspect",
       "sources": [
-        "src/funcinfo.cc"
-      ]
-    },
-    {
-      "target_name": "codeevents",
-      "sources": [
+        "src/addon.cc",
         "src/code-events.cc",
-        "src/event-queue.cc"
+        "src/event-queue.cc",
+        "src/func-info.cc"
+      ],
+      "include_dirs": [
+        "<!(node -e \"require('nan')\")"
+      ],
+      "conditions": [
+        [
+          "OS == 'mac'",
+          {
+            "xcode_settings": {
+              "OTHER_CFLAGS": [
+                "-arch x86_64",
+                "-arch arm64"
+              ],
+              "OTHER_LDFLAGS": [
+                "-arch x86_64",
+                "-arch arm64"
+              ]
+            }
+          }
+        ]
       ]
     }
   ]

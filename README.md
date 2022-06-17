@@ -1,50 +1,43 @@
 # @contrast/fn-inspect
-[![codecov](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect/branch/main/graph/badge.svg)](https://codecov.io/gh/Contrast-Security-Inc/node-fn-inspect)
-![Pipeline Status](https://github.com/Contrast-Security-Inc/node-fn-inspect/workflows/Unit%20Tests%20and%20Build/badge.svg)
 
-This module exposes some useful information from the underlying v8 engine.  Including:
+[![Test](https://github.com/Contrast-Security-Inc/node-fn-inspect/actions/workflows/test.yml/badge.svg)](https://github.com/Contrast-Security-Inc/node-fn-inspect/actions/workflows/test.yml)
 
-* file and line number given a function reference
-* code events (i.e. LAZY_COMPILE)
+This module exposes some useful information from the underlying v8 engine,
+including:
 
-## Installation
-`npm install @contrast/fn-inspect`
+- file and line number given a function reference
+- code events (i.e. `'LAZY_COMPILE'`)
 
 ## Usage
 
 Getting details about a function:
 
-```javascript
-  const { funcInfo } = require('@contrast/fn-inspect');
+```js
+const { funcInfo } = require('@contrast/fn-inspect');
 
-  function testFunction() {}
+function testFn() {}
 
-  const results = funcInfo(testFunction);
-
-  // Returns an object with the following data
-  // { lineNumber: 2, file: 'example.js', method: 'testFunction', type: 'Function' }
+const results = funcInfo(testFn);
+// => { lineNumber: 2, file: 'example.js', method: 'testFn', type: 'Function' }
 ```
 
 Registering a listener for code events:
 
-```javascript
-  const { setCodeEventListener } = require('@contrast/fn-inspect');
+```js
+const { setCodeEventListener } = require('@contrast/fn-inspect');
 
-  setCodeEventListener(function(event) {
-    console.log(event);
-  });
+setCodeEventListener((event) => {
+  console.log(event);
+});
 ```
 
-## Build locally
-` npm install`
+## Building locally
 
-## Test
-` npm test`
+`npm run build` will build the project for your current OS and architecture.
 
-## Publishing New Versions to @contrast/fn-inspect
-1. Trigger a Build Artifact workflow by merging or pushing to develop.
-2. If you don't have one, [create a Github personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token), be sure to enable SSO, and set an environment variable, `AUTH_TOKEN`, to it
-3. Run `npm run release`
+`npm run download` will pull the most recent build artifacts from GitHub.
 
-## License
-Copyright 2020-present OpenJS Foundation and contributors. Licensed [MIT](https://github.com/Contrast-Security-Inc/node-fn-inspect/blob/main/LICENSE).
+## Publishing
+
+Simply run `npm version` and `git push && git push --tags`. CI will take care of
+releasing on taggedcommits.
