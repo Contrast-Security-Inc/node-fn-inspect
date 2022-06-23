@@ -27,8 +27,6 @@ jobs:
             build-group: win32
     name: Build ${{ matrix.build-group }}
     runs-on: ${{ matrix.os }}
-    env:
-      BUILD_GROUP: ${{ matrix.build-group }}
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -41,15 +39,14 @@ jobs:
       - name: Install
         run: npm ci --ignore-scripts
       - name: Build
-        run: npm run build:$BUILD_GROUP
+        run: npm run build:${{ matrix.build-group }}
         shell: bash
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.BUILD_GROUP }}
-          path: prebuilds/*
+          name: prebuilds
+          path: prebuilds/
   release:
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
     needs: build
     name: Release to NPM
     runs-on: ubuntu-latest
@@ -67,6 +64,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
+          name: prebuilds
           path: prebuilds/
       - name: Publish to npm
         run: npm publish
