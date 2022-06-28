@@ -1,6 +1,6 @@
 {
   "name": "@contrast/fn-inspect",
-  "version": "3.0.0",
+  "version": "3.1.0-beta.1",
   "description": "Retrieve function name and line number from a function reference",
   "keywords": [
     "instrumentation"
@@ -28,9 +28,9 @@
     "install": "node-gyp-build",
     "prepare": "husky install",
     "build": "prebuildify -t 12.13.0 -t 14.15.0 -t 16.9.1 --strip",
-    "build:linux-x64": "prebuildify-cross -i centos7-devtoolset7 -i alpine -t 12.13.0 -t 14.15.0 -t 16.9.1 --strip",
-    "build:darwin-x64+arm64": "npm run build -- --arch x64+arm64",
-    "build:win32-x64": "npm run build",
+    "build:linux": "prebuildify-cross -i centos7-devtoolset7 -i alpine -i linux-arm64 -t 12.13.0 -t 14.15.0 -t 16.9.1 --strip",
+    "build:darwin": "npm run build -- --arch x64+arm64",
+    "build:win32": "npm run build",
     "clean": "rimraf build/ coverage/ prebuilds/",
     "download": "node scripts/download-artifacts.js",
     "test": "c8 --reporter lcov --reporter text mocha .",

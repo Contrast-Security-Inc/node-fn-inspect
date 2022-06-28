@@ -73,42 +73,43 @@ octokit.actions
       process.exit(1);
     }
 
-    // clean up any existing prebuilds
-    return new Promise((resolve, reject) => {
-      rimraf(prebuildsDir, (err) => {
-        if (err) reject(err);
-        resolve();
-      });
-    }).then(() => data.artifacts);
-  })
-  .then((artifacts) =>
-    // download and extract each artifact to prebuilds/<artifact>
-    Promise.all(
-      artifacts.map(async (artifact) => {
-        const { url } = await octokit.actions.downloadArtifact({
-          owner,
-          repo,
-          artifact_id: artifact.id,
-          archive_format: 'zip',
-        });
+    const [artifact] = data.artifacts;
 
-        const artifactDir = path.resolve(prebuildsDir, artifact.name);
-        const stream = unzipper.Extract({ path: artifactDir });
-
-        return new Promise((resolve) => {
-          https.get(url, (res) => {
-            res.pipe(stream).on('close', () => {
-              console.log(
-                'artifact %s downloaded and extracted',
-                artifact.name
-              );
-              resolve();
-            });
-          });
-        });
+    // download prebuilds artifact and extract to prebuilds/
+    return octokit.actions
+      .downloadArtifact({
+        owner,
+        repo,
+        artifact_id: artifact.id,
+        archive_format: 'zip',
       })
-    )
-  )
+      .then(({ url }) =>
+        // clean up prebuilds/ dir
+        new Promise((resolve, reject) => {
+          rimraf(prebuildsDir, (err) => {
+            if (err) reject(err);
+            resolve(undefined);
+          });
+        }).then(
+          () =>
+            // download and extract artifact
+            new Promise((resolve) => {
+              https.get(url, (res) => {
+                res
+                  .pipe(unzipper.Extract({ path: prebuildsDir }))
+                  .on('close', () => {
+                    console.log(
+                      'artifact "%s" downloaded and extracted to %s/',
+                      artifact.name,
+                      path.relative(process.cwd(), prebuildsDir)
+                    );
+                    resolve(undefined);
+                  });
+              });
+            })
+        )
+      );
+  })
   .catch((err) => {
     console.error('ERROR: Unable to download and extract artifacts');
     console.error(err);
