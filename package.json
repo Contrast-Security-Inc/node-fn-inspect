@@ -27,8 +27,8 @@
   "scripts": {
     "install": "node-gyp-build",
     "prepare": "husky install",
-    "build": "prebuildify -t 12.13.0 -t 14.15.0 -t 16.9.1 --strip",
-    "build:linux": "prebuildify-cross -i centos7-devtoolset7 -i alpine -i linux-arm64 -t 12.13.0 -t 14.15.0 -t 16.9.1 --strip",
+    "build": "prebuildify -t 12.13.0 -t 14.15.0 -t 16.9.1 -t 18.7.0 --strip",
+    "build:linux": "prebuildify-cross -i centos7-devtoolset7 -i alpine -i linux-arm64 -t 12.13.0 -t 14.15.0 -t 16.9.1 -t 18.7.0 --strip",
     "build:darwin": "npm run build -- --arch x64+arm64",
     "build:win32": "npm run build",
     "clean": "rimraf build/ coverage/ prebuilds/",
