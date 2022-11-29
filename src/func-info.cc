@@ -19,6 +19,9 @@ NAN_METHOD(funcInfo) {
                  Nan::New("lineNumber").ToLocalChecked(),
                  Nan::New(fn->GetScriptLineNumber()));
         Nan::Set(obj, Nan::New("method").ToLocalChecked(), fn->GetName());
+        Nan::Set(obj,
+                 Nan::New("column").ToLocalChecked(),
+                 Nan::New(fn->GetScriptColumnNumber()));
     }
 
     info.GetReturnValue().Set(obj);
