@@ -8,7 +8,7 @@ let timer = null;
 
 module.exports = {
   /**
-   * Retrieves name, type, lineNumber and file from a function reference
+   * Retrieves name, type, column, lineNumber and file from a function reference
    *
    * @param {Function} fn function reference to obtain info
    * @return {FunctionInfo | null}

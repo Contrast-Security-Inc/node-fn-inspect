@@ -2,6 +2,7 @@
 
 declare interface FunctionInfo {
   file: string;
+  column: number;
   lineNumber: number;
   method: string;
   type: 'AsyncFunction' | 'Function';
@@ -27,7 +28,7 @@ declare interface CodeEvent {
 }
 
 declare const fnInspect: {
-  /** Retrieves name, type, lineNumber and file from a function reference */
+  /** Retrieves name, type, column, lineNumber and file from a function reference */
   funcInfo(fn: Function): FunctionInfo | null;
 
   /**
