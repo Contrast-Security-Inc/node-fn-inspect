@@ -18,7 +18,7 @@ const { funcInfo } = require('@contrast/fn-inspect');
 function testFn() {}
 
 const results = funcInfo(testFn);
-// => { lineNumber: 2, file: 'example.js', method: 'testFn', type: 'Function' }
+// => { lineNumber: 2, column: 15, file: 'example.js', method: 'testFn', type: 'Function' }
 ```
 
 Registering a listener for code events:
