@@ -1,6 +1,7 @@
 // @ts-check
 'use strict';
 
+const semver = require('semver');
 const { expect } = require('chai');
 const { funcInfo, setCodeEventListener, stopListening } = require('.');
 
@@ -52,7 +53,7 @@ describe('fn-inspect', function () {
       expect(results).to.deep.equal({
         column: 21,
         file: __filename,
-        lineNumber: 48, // line numbers start at 0 in v8
+        lineNumber: 49, // line numbers start at 0 in v8
         method: 'inline',
         type: 'Function',
       });
@@ -65,7 +66,7 @@ describe('fn-inspect', function () {
       expect(results).to.deep.equal({
         column: 32,
         file: __filename,
-        lineNumber: 61, // line numbers start at 0 in v8
+        lineNumber: 62, // line numbers start at 0 in v8
         method: 'inlineAsync',
         type: 'AsyncFunction',
       });
@@ -83,6 +84,7 @@ describe('fn-inspect', function () {
   });
 
   describe('setCodeEventListener', function () {
+    const type = semver.gte(process.version, '20.0.0') ? 'Function' : 'LazyCompile';
     const TIMEOUT = process.platform === 'win32' ? 61000 : 10000;
     this.timeout(TIMEOUT);
 
@@ -139,9 +141,9 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc1');
       expect(event).to.deep.equal({
         func: 'testfunc1',
-        lineNumber: 133,
+        lineNumber: 135,
         script: __filename,
-        type: 'LazyCompile',
+        type
       });
     });
 
@@ -153,9 +155,9 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc2');
       expect(event).to.deep.equal({
         func: 'testfunc2',
-        lineNumber: 149,
+        lineNumber: 151,
         script: __filename,
-        type: 'LazyCompile',
+        type
       });
     });
 
@@ -176,17 +178,17 @@ describe('fn-inspect', function () {
       const event1 = await waitForLazyCompile('MyClass');
       expect(event1).to.deep.equal({
         func: 'MyClass',
-        lineNumber: 164,
+        lineNumber: 166,
         script: __filename,
-        type: 'LazyCompile',
+        type
       });
 
       const event2 = await waitForLazyCompile('bar');
       expect(event2).to.deep.equal({
         func: 'bar',
-        lineNumber: 168,
+        lineNumber: 170,
         script: __filename,
-        type: 'LazyCompile',
+        type
       });
     });
 
@@ -199,9 +201,9 @@ describe('fn-inspect', function () {
       const event = await waitForLazyCompile('testfunc3');
       expect(event).to.deep.equal({
         func: 'testfunc3',
-        lineNumber: 196,
+        lineNumber: 198,
         script: __filename,
-        type: 'LazyCompile',
+        type
       });
 
       // setTimeout isn't exact but it should be close to 1.5 seconds after declaration
@@ -222,9 +224,9 @@ describe('fn-inspect', function () {
       expect(newListenerCalled).to.be.true;
       expect(event).to.deep.equal({
         func: 'testfunc4',
-        lineNumber: 218,
+        lineNumber: 220,
         script: __filename,
-        type: 'LazyCompile',
+        type
       });
     });
   });
