@@ -1,14 +1,30 @@
 #include <nan.h>
 
-#include "code-events.h"
-#include "func-info.h"
+void FuncInfo(const v8::FunctionCallbackInfo<v8::Value> &info) {
+    if (info.Length() < 1 || !info[0]->IsFunction()) {
+        info.GetReturnValue().Set(Nan::Null());
+        return;
+    }
+    v8::Local<v8::Object> obj = Nan::New<v8::Object>();
+    v8::Local<v8::Function> fn = info[0].As<v8::Function>();
 
-NAN_MODULE_INIT(Init) {
-    NAN_EXPORT(target, initHandler);
-    NAN_EXPORT(target, deinitHandler);
-    NAN_EXPORT(target, getNextCodeEvent);
+    v8::Local<v8::Value> resourceName = fn->GetScriptOrigin().ResourceName();
+    if (!resourceName.IsEmpty()) {
+        Nan::Set(obj, Nan::New("file").ToLocalChecked(), resourceName);
+        Nan::Set(obj, Nan::New("lineNumber").ToLocalChecked(), Nan::New(fn->GetScriptLineNumber()));
+        Nan::Set(obj, Nan::New("method").ToLocalChecked(), fn->GetName());
+        Nan::Set(obj, Nan::New("column").ToLocalChecked(), Nan::New(fn->GetScriptColumnNumber()));
+    }
 
-    NAN_EXPORT(target, funcInfo);
+    info.GetReturnValue().Set(obj);
 }
 
-NODE_MODULE(addon, Init)
+NODE_MODULE_INIT(/*exports, module, context*/) {
+    v8::Isolate* isolate = context->GetIsolate();
+    v8::Local<v8::Value> addon_data;
+
+    exports->Set(context,
+        Nan::New("fninspect").ToLocalChecked(),
+        v8::FunctionTemplate::New(isolate, FuncInfo, addon_data)->GetFunction(context).ToLocalChecked()
+    );
+}
