@@ -21,10 +21,9 @@ void FuncInfo(const v8::FunctionCallbackInfo<v8::Value> &info) {
 
 NODE_MODULE_INIT(/*exports, module, context*/) {
     v8::Isolate* isolate = context->GetIsolate();
-    v8::Local<v8::Value> addon_data;
 
     exports->Set(context,
         Nan::New("fninspect").ToLocalChecked(),
-        v8::FunctionTemplate::New(isolate, FuncInfo, addon_data)->GetFunction(context).ToLocalChecked()
+        v8::FunctionTemplate::New(isolate, FuncInfo)->GetFunction(context).ToLocalChecked()
     );
 }
