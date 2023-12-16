@@ -23,7 +23,7 @@ NODE_MODULE_INIT(/*exports, module, context*/) {
     v8::Isolate* isolate = context->GetIsolate();
 
     exports->Set(context,
-        Nan::New("fninspect").ToLocalChecked(),
+        Nan::New("funcInfo").ToLocalChecked(),
         v8::FunctionTemplate::New(isolate, FuncInfo)->GetFunction(context).ToLocalChecked()
     );
 }
