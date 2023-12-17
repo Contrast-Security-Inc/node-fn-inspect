@@ -4,6 +4,26 @@
 const { expect } = require('chai');
 const { funcInfo } = require('.');
 
+describe('canary worker_thread test', function() {
+  it('require in a worker thread succeeds after require in main thread', function(done) {
+    const { Worker } = require('worker_threads');
+    const worker = new Worker(`
+      const { funcInfo } = require('.');
+
+      const info = funcInfo(() => {});
+
+      process.exit(0);
+    `, { eval: true });
+
+    worker.on('error', done);
+
+    worker.on('exit', exitCode => {
+      expect(exitCode).to.equal(0);
+      done();
+    });
+  });
+});
+
 describe('funcInfo', function () {
   const mod = require('./test/resources/module');
   const expectedPath = require.resolve('./test/resources/module.js');
@@ -51,7 +71,7 @@ describe('funcInfo', function () {
     expect(results).to.deep.equal({
       column: 19,
       file: __filename,
-      lineNumber: 47, // line numbers start at 0 in v8
+      lineNumber: 67, // line numbers start at 0 in v8
       method: 'inline',
       type: 'Function',
     });
@@ -64,7 +84,7 @@ describe('funcInfo', function () {
     expect(results).to.deep.equal({
       column: 30,
       file: __filename,
-      lineNumber: 60, // line numbers start at 0 in v8
+      lineNumber: 80, // line numbers start at 0 in v8
       method: 'inlineAsync',
       type: 'AsyncFunction',
     });
