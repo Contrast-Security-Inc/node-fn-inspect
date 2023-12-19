@@ -39,7 +39,7 @@ jobs:
       - name: Install setuptools
         run: pip install setuptools
       - name: Install
-        run: npm install
+        run: npm ci
       - name: Show node-gyp version
         run: npm ls node-gyp
       - name: Test
