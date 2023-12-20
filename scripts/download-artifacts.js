@@ -5,7 +5,7 @@
 const { Octokit } = require('@octokit/rest');
 const https = require('https');
 const path = require('path');
-const rimraf = require('rimraf');
+const { rimraf } = require('rimraf');
 const unzipper = require('unzipper');
 
 const { AUTH_TOKEN } = process.env;
@@ -83,31 +83,26 @@ octokit.actions
         artifact_id: artifact.id,
         archive_format: 'zip',
       })
-      .then(({ url }) =>
-        // clean up prebuilds/ dir
-        new Promise((resolve, reject) => {
-          rimraf(prebuildsDir, (err) => {
-            if (err) reject(err);
-            resolve(undefined);
-          });
-        }).then(
-          () =>
-            // download and extract artifact
-            new Promise((resolve) => {
-              https.get(url, (res) => {
-                res
-                  .pipe(unzipper.Extract({ path: prebuildsDir }))
-                  .on('close', () => {
-                    console.log(
-                      'artifact "%s" downloaded and extracted to %s/',
-                      artifact.name,
-                      path.relative(process.cwd(), prebuildsDir)
-                    );
-                    resolve(undefined);
-                  });
+      .then(async ({ url }) => {
+        await rimraf(prebuildsDir);
+        return url;
+      })
+      .then((url) =>
+        // download and extract artifact
+        new Promise((resolve) => {
+          https.get(url, (res) => {
+            res
+              .pipe(unzipper.Extract({ path: prebuildsDir }))
+              .on('close', () => {
+                console.log(
+                  'artifact "%s" downloaded and extracted to %s/',
+                  artifact.name,
+                  path.relative(process.cwd(), prebuildsDir)
+                );
+                resolve(undefined);
               });
-            })
-        )
+          });
+        })
       );
   })
   .catch((err) => {

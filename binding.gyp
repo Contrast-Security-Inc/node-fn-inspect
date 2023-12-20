@@ -1,15 +1,12 @@
 {
   "variables" : {
-    "openssl_fips": "",
+    "openssl_fips": ""
   },
   "targets": [
     {
       "target_name": "fninspect",
       "sources": [
-        "src/addon.cc",
-        "src/code-events.cc",
-        "src/event-queue.cc",
-        "src/func-info.cc"
+        "src/addon.cc"
       ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")"

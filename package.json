@@ -53,7 +53,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "mocha": "^10.2.0",
-    "node-gyp": "^9.3.1",
+    "node-gyp": "^9.4.1",
     "prebuildify": "^5.0.1",
     "prebuildify-cross": "^5.0.0",
     "rimraf": "^5.0.1",
