@@ -36,6 +36,11 @@ jobs:
         with:
           node-version: 16
           architecture: x64
+      # new versions of python don't include distutils. setuptools provides it.
+      - name: Install setuptools
+        run: pip install setuptools
+      - name: Update npm
+        run: npm install -g npm@8
       - name: Install
         run: npm ci --ignore-scripts
       - name: Build
@@ -59,6 +64,11 @@ jobs:
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
+      # new versions of python don't include distutils. setuptools provides it.
+      - name: Install setuptools
+        run: pip install setuptools
+      - name: Update npm
+        run: npm install -g npm@8
       - name: Install
         run: npm ci --ignore-scripts
       - name: Download artifacts
