@@ -28,8 +28,8 @@
     "install": "node-gyp-build",
     "prepare": "husky install",
     "prebuild": "npm run clean",
-    "build": "prebuildify -t 16.9.1 -t 18.7.0 -t 20.5.0 --strip --napi false",
-    "build:linux": "prebuildify-cross -i centos7-devtoolset7 -i alpine -i linux-arm64 -t 16.9.1 -t 18.7.0 -t 20.5.0 --strip --napi false",
+    "build": "prebuildify -t 16.9.1 -t 18.7.0 -t 20.5.0 22.2.0 --strip --napi false",
+    "build:linux": "prebuildify-cross -i centos7-devtoolset7 -i alpine -i linux-arm64 -t 16.9.1 -t 18.7.0 -t 20.5.0 22.2.0 --strip --napi false",
     "build:darwin": "npm run build -- --arch x64+arm64",
     "build:win32": "npm run build",
     "clean": "rimraf build/ coverage/ prebuilds/",
@@ -41,7 +41,7 @@
     "node": ">=16.9.1"
   },
   "dependencies": {
-    "nan": "^2.17.0",
+    "nan": "^2.19.0",
     "node-gyp-build": "^4.8.1"
   },
   "devDependencies": {
