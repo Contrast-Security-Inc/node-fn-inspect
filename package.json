@@ -28,7 +28,7 @@
     "install": "node-gyp-build",
     "prepare": "husky install",
     "prebuild": "npm run clean",
-    "build": "prebuildify -t 16.9.1 -t 18.7.0 -t 20.5.0 --strip",
+    "build": "prebuildify -t 16.9.1 -t 18.7.0 -t 20.5.0 --strip --napi false",
     "build:linux": "prebuildify-cross -i centos7-devtoolset7 -i alpine -i linux-arm64 -t 16.9.1 -t 18.7.0 -t 20.5.0 --strip",
     "build:darwin": "npm run build -- --arch x64+arm64",
     "build:win32": "npm run build",
