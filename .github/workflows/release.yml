@@ -23,7 +23,7 @@ jobs:
             build-group: linux
           - os: macos-latest
             build-group: darwin
-          - os: windows-2019
+          - os: windows-latest
             build-group: win32
     name: Build ${{ matrix.build-group }}
     runs-on: ${{ matrix.os }}
