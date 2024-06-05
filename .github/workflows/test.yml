@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Update npm
-        run: npm install -g npm@10
+        run: npm install -g npm@9 # npm 10 does not support node 16
       # new versions of python don't include distutils. setuptools provides it.
       - name: Install setuptools
         run: pip install setuptools
