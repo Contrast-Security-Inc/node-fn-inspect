@@ -30,9 +30,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
       - name: Update npm
@@ -46,9 +46,9 @@ jobs:
         run: npm run build:${{ matrix.build-group }}
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: prebuilds
+          name: prebuilds-${{ matrix.build-group }}
           path: prebuilds/
   release:
     needs: build
@@ -57,9 +57,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
@@ -68,10 +68,11 @@ jobs:
       - name: Install
         run: npm ci --ignore-scripts
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: prebuilds
+          pattern: prebuilds-*
           path: prebuilds/
+          merge-multiple: true
       - name: Publish to npm
         run: npm publish
         env:
