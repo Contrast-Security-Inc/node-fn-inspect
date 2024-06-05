@@ -33,14 +33,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          architecture: x64
-      - name: Python version
-        run: python --version
+      - name: Update npm
+        run: npm install -g npm@10
+      # new versions of python don't include distutils. setuptools provides it.
       - name: Install setuptools
         run: pip install setuptools
-      - name: Install dependencies
+      - name: Install dependencies and build
         run: npm ci
-      - name: Show node-gyp version
-        run: npm ls node-gyp
       - name: Test
         run: npm test
