@@ -30,52 +30,49 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
-          architecture: x64
+          node-version: lts/*
+      - name: Update npm
+        run: npm install -g npm@10
       # new versions of python don't include distutils. setuptools provides it.
       - name: Install setuptools
         run: pip install setuptools
-      - name: Update npm
-        run: npm install -g npm@8
       - name: Install
         run: npm ci --ignore-scripts
       - name: Build
         run: npm run build:${{ matrix.build-group }}
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: prebuilds
+          name: prebuilds-${{ matrix.build-group }}
           path: prebuilds/
   release:
     needs: build
-    name: Release to NPM
+    name: Release to npm
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
-      # new versions of python don't include distutils. setuptools provides it.
-      - name: Install setuptools
-        run: pip install setuptools
       - name: Update npm
-        run: npm install -g npm@8
+        run: npm install -g npm@10
       - name: Install
         run: npm ci --ignore-scripts
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: prebuilds
+          pattern: prebuilds-*
           path: prebuilds/
+          merge-multiple: true
       - name: Publish to npm
         run: npm publish
         env:

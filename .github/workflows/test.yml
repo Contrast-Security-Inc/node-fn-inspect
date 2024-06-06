@@ -28,19 +28,17 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          architecture: x64
-      - name: Python version
-        run: python --version
+      - name: Update npm
+        run: npm install -g npm@9 # npm 10 does not support node 16
+      # new versions of python don't include distutils. setuptools provides it.
       - name: Install setuptools
         run: pip install setuptools
-      - name: Install dependencies
+      - name: Install dependencies and build
         run: npm ci
-      - name: Show node-gyp version
-        run: npm ls node-gyp
       - name: Test
         run: npm test
