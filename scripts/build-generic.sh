@@ -13,6 +13,9 @@ target=$1
 
 common="-t 16.9.1 -t 18.7.0 -t 20.5.0 -t 22.2.0 --strip --napi false"
 
+ls -l .
+npm ls
+
 case $target in
     centos7 | alpine)
         echo "Building for $target"
