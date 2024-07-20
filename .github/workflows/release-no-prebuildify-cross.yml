@@ -16,17 +16,17 @@ permissions:
 
 jobs:
   build-linux:
-    strategy:
-      matrix:
-        image:
-          - linux-arm64
-          - centos7
-          - alpine
-    name: Build ${{ matrix.image }}
+    # strategy:
+    #   matrix:
+    #     image:
+    #       - linux-arm64
+    #       - centos7
+    #       - alpine
+    name: Build linux versions
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
       - name: Set up node
         uses: actions/setup-node@v4
@@ -37,10 +37,16 @@ jobs:
       # new versions of python don't include distutils. setuptools provides it.
       # - name: Install setuptools
       #   run: pip install setuptools
-      - name: Install
+      - name: Install dependencies
         run: npm ci --ignore-scripts
-      - name: Build
-        run: docker run --rm -v ${PWD}:/repo -w /repo ghcr.io/bmacnaughton/${{ matrix.image }}
+      # build each image inline so the matrix doesn't checkout, install, install each time.
+      - name: Build alpine
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo ghcr.io/bmacnaughton/alpine
+      - name: Build centos7
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo ghcr.io/bmacnaughton/centos7
+      - name: Build linux-arm64
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo ghcr.io/bmacnaughton/linux-arm64
+      # now upload what was built
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
