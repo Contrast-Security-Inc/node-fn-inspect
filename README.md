@@ -30,3 +30,16 @@ const results = funcInfo(testFn);
 
 Simply run `npm version` and `git push && git push --tags`. CI will take care of
 releasing.
+
+## Temporary note
+
+```
+bruce:~/.../csi/fn-inspect$ npm uninstall prebuildify-cross
+
+removed 226 packages, and audited 425 packages in 784ms
+
+89 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+```
