@@ -1,0 +1,108 @@
+name: new-build
+
+on: workflow_dispatch
+  # push:
+  #   tags: ['*']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HUSKY: 0
+
+permissions:
+  contents: read
+
+jobs:
+  build-linux:
+    strategy:
+      matrix:
+        image:
+          - linux-arm64
+          - centos7
+          - alpine
+    name: Build ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # - name: Update npm
+      #   run: npm install -g npm@10
+      # new versions of python don't include distutils. setuptools provides it.
+      # - name: Install setuptools
+      #   run: pip install setuptools
+      - name: Install
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: docker run --rm -v ${PWD}:/repo -w /repo ghcr.io/bmacnaughton/${{ matrix.image }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prebuilds-linux
+          path: prebuilds/
+  build-macos-windows:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            build-group: darwin
+          - os: windows-latest
+            build-group: win32
+    name: Build ${{ matrix.build-group }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Update npm
+        run: npm install -g npm@10
+      # new versions of python don't include distutils. setuptools provides it.
+      - name: Install setuptools
+        run: pip install setuptools
+      - name: Install
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npm run build:${{ matrix.build-group }}
+        shell: bash
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prebuilds-${{ matrix.build-group }}
+          path: prebuilds/
+  # release:
+  #   needs: [build-linux, build-macos-windows]
+  #   name: Release to npm
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 5
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Set up node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org
+  #     - name: Update npm
+  #       run: npm install -g npm@10
+  #     - name: Install
+  #       run: npm ci --ignore-scripts
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         pattern: prebuilds-*
+  #         path: prebuilds/
+  #         merge-multiple: true
+  #     - name: Publish to npm
+  #       run: npm publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
