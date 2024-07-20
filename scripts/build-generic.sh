@@ -13,7 +13,7 @@ target=$1
 
 common="-t 16.9.1 -t 18.7.0 -t 20.5.0 -t 22.2.0 --strip --napi false"
 
-ls -l .
+ls -l . node_modules/.bin node_modules/prebuildify
 npm ls
 
 case $target in
