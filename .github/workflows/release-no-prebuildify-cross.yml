@@ -77,8 +77,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Update npm
-        run: npm install -g npm@10
+      # - name: Update npm
+      #   run: npm install -g npm@10
       # new versions of python don't include distutils. setuptools provides it.
       - name: Install setuptools
         run: pip install setuptools
