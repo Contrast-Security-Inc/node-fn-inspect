@@ -1,14 +1,13 @@
 #!/bin/sh
 
 #
-# this script is invoked by each docker container that builds
-# native modules. it passes a single argument - the name of the
-# Dockerfile context directory which is the target platform.
+# this script is invoked by each docker container that builds linux-based
+# native modules. it gets a single argument - the name of the Dockerfile
+# context directory which is the target platform.
 
 #
 # responsibilities of the script:
 # - invoke prebuildify with the correct arguments for the target
-
 target=$1
 
 common="-t 16.9.1 -t 18.7.0 -t 20.5.0 -t 22.2.0 --strip --napi false"
@@ -36,4 +35,3 @@ case $target in
     ;;
 
 esac
-

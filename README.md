@@ -22,7 +22,8 @@ const results = funcInfo(testFn);
 
 ## Building locally
 
-`npm run build` will build the project for your current OS and architecture.
+`npm run build` will build the project for your current OS and architecture. This cleans
+the prebuild directory first.
 
 `npm run download` will pull the most recent build artifacts from GitHub.
 
