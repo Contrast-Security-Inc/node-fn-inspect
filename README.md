@@ -28,10 +28,17 @@ const results = funcInfo(testFn);
 
 ## Publishing
 
-Simply run `npm version` and `git push && git push --tags`. The `release` workflow runs when
-a tag of the form `v1.2.3` is pushed.
+Simply run `npm version` and then invoke the `release` workflow. You can run
+`release` using the github UI or, if you have the github CLI installed, you
+can run `gh workflow run release.yml` (also available via `npm run release`).
 
-## Temporary code
+Note that `upload-artifacts@v4` no longer works when there are multiple
+artifacts with the same name. That's why the `release` workflow has the
+following section:
 
-Node version 22.5.0 ships with a very broken `npm`. This hardcodes version 22.5.1 until
-github actions stops defaulting to 22.5.0 when node version 22 is specified.
+```
+  uses: actions/upload-artifact@v4
+  with:
+    name: prebuilds-${{ matrix.build-group }}
+    path: prebuilds/
+```
