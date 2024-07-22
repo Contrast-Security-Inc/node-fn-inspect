@@ -16,12 +16,6 @@ permissions:
 
 jobs:
   build-linux:
-    # strategy:
-    #   matrix:
-    #     image:
-    #       - linux-arm64
-    #       - centos7
-    #       - alpine
     name: Build linux versions
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -36,17 +30,18 @@ jobs:
         run: npm ci --ignore-scripts
       # build each image inline so the matrix doesn't checkout, install, install each time.
       - name: Build alpine
-        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/bmacnaughton/alpine
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/alpine
       - name: Build centos7
-        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/bmacnaughton/centos7
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/centos7
       - name: Build linux-arm64
-        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/bmacnaughton/linux-arm64
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/linux-arm64
       # now upload what was built
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: prebuilds-linux
           path: prebuilds/
+
   build-macos-windows:
     strategy:
       matrix:
