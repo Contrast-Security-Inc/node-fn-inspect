@@ -1,6 +1,7 @@
-name: Release
+name: new-build
 
 on:
+  workflow_dispatch:
   push:
     tags: ['v[0-9]+.[0-9]+.[0-9]+']
 
@@ -15,12 +16,37 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-linux:
+    name: Build linux versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.5.1
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      # build each image inline so the matrix doesn't checkout, install, install each time.
+      - name: Build alpine
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/alpine
+      - name: Build centos7
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/centos7
+      - name: Build linux-arm64
+        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/linux-arm64
+      # now upload what was built
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prebuilds-linux
+          path: prebuilds/
+
+  build-macos-windows:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            build-group: linux
           - os: macos-latest
             build-group: darwin
           - os: windows-latest
@@ -34,13 +60,8 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - name: Update npm
-        run: npm install -g npm@10
-      # new versions of python don't include distutils. setuptools provides it.
-      - name: Install setuptools
-        run: pip install setuptools
-      - name: Install
+          node-version: 22.5.1
+      - name: Install dependencies
         run: npm ci --ignore-scripts
       - name: Build
         run: npm run build:${{ matrix.build-group }}
@@ -51,7 +72,7 @@ jobs:
           name: prebuilds-${{ matrix.build-group }}
           path: prebuilds/
   release:
-    needs: build
+    needs: [build-linux, build-macos-windows]
     name: Release to npm
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -61,10 +82,8 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.5.1
           registry-url: https://registry.npmjs.org
-      - name: Update npm
-        run: npm install -g npm@10
       - name: Install
         run: npm ci --ignore-scripts
       - name: Download artifacts
