@@ -32,15 +32,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.5.1
-      # - name: Update npm
-      #   run: npm install -g npm@10
-      # new versions of python don't include distutils. setuptools provides it.
-      # - name: Install setuptools
-      #   run: pip install setuptools
       - name: Install dependencies
         run: npm ci --ignore-scripts
-      - name: whoami
-        run: id
       # build each image inline so the matrix doesn't checkout, install, install each time.
       - name: Build alpine
         run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/bmacnaughton/alpine
@@ -72,13 +65,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.5.1
-      # - name: Update npm
-      #   run: npm install -g npm@10
       - name: Install dependencies
         run: npm ci --ignore-scripts
-      # new versions of python don't include distutils. setuptools provides it.
-      - name: Install setuptools
-        run: pip install setuptools
       - name: Build
         run: npm run build:${{ matrix.build-group }}
         shell: bash
@@ -98,10 +86,8 @@ jobs:
   #     - name: Set up node
   #       uses: actions/setup-node@v4
   #       with:
-  #         node-version: 22
+  #         node-version: 22.5.1
   #         registry-url: https://registry.npmjs.org
-  #     - name: Update npm
-  #       run: npm install -g npm@10
   #     - name: Install
   #       run: npm ci --ignore-scripts
   #     - name: Download artifacts

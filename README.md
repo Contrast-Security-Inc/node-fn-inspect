@@ -22,25 +22,16 @@ const results = funcInfo(testFn);
 
 ## Building locally
 
-`npm run build` will build the project for your current OS and architecture. This cleans
-the prebuild directory first.
+`npm run build` will build the project for your current OS and architecture.
 
 `npm run download` will pull the most recent build artifacts from GitHub.
 
 ## Publishing
 
-Simply run `npm version` and `git push && git push --tags`. CI will take care of
-releasing.
+Simply run `npm version` and `git push && git push --tags`. The `release` workflow runs when
+a tag of the form `v1.2.3` is pushed.
 
-## Temporary note
+## Temporary code
 
-```
-bruce:~/.../csi/fn-inspect$ npm uninstall prebuildify-cross
-
-removed 226 packages, and audited 425 packages in 784ms
-
-89 packages are looking for funding
-  run `npm fund` for details
-
-found 0 vulnerabilities
-```
+Node version 22.5.0 ships with a very broken `npm`. This hardcodes version 22.5.1 until
+github actions stops defaulting to 22.5.0 when node version 22 is specified.
