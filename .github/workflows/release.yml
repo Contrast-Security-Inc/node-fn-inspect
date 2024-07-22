@@ -28,11 +28,11 @@ jobs:
         run: npm ci --ignore-scripts
       # build each image inline so the matrix doesn't checkout, install, install each time.
       - name: Build alpine
-        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/alpine
+        run: docker run --rm -v ${{ github.workspace }}:/repo -u $(id -u) ghcr.io/contrast-security-oss/alpine
       - name: Build centos7
-        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/centos7
+        run: docker run --rm -v ${{ github.workspace }}:/repo -u $(id -u) ghcr.io/contrast-security-oss/centos7
       - name: Build linux-arm64
-        run: docker run --rm -v ${{ github.workspace }}:/repo -w /repo -u $(id -u) ghcr.io/contrast-security-oss/linux-arm64
+        run: docker run --rm -v ${{ github.workspace }}:/repo -u $(id -u) ghcr.io/contrast-security-oss/linux-arm64
       # now upload what was built
       - name: Upload artifact
         uses: actions/upload-artifact@v4
